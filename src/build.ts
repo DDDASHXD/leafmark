@@ -267,6 +267,8 @@ async function ensureFirstRunTools(opts: CliOptions): Promise<void> {
 
   if (opts.yes) {
     installMissingTools(missing.map((t) => t.name));
+    mkdirSync(CONFIG_DIR, { recursive: true });
+    writeFileSync(FIRST_RUN_MARKER, JSON.stringify({ checkedAt: new Date().toISOString() }, null, 2));
     return;
   }
 
@@ -727,7 +729,6 @@ async function buildOnce(workspace: Workspace, opts: CliOptions): Promise<void> 
   const chapterFiles = resolveChapterFiles(chapterArgs, activeProjectDir);
   const merged = buildMergedMarkdown(meta, rawYaml, chapterFiles, activeProjectDir, mergedYamlOpts);
   const counts = countMergedBody(merged);
-  const resourcePath = pandocResourcePath(ctx);
 
   console.log(`Leafmark ${bundleName ? `(${bundleName}) ` : ''}building ${chapterFiles.length} chapter(s)`);
   console.log(`Input: ${activeProjectDir}`);
@@ -777,7 +778,6 @@ async function buildOnce(workspace: Workspace, opts: CliOptions): Promise<void> 
     console.log(`Wrote ${relFrom(workspace.inputRoot, pdfOut)}`);
   }
 
-  console.log(`Resource path: ${resourcePath}`);
 }
 
 async function watch(workspace: Workspace, opts: CliOptions): Promise<void> {
