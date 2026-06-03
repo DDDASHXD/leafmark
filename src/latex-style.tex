@@ -1,0 +1,65 @@
+% PDF: light gray code panels + syntax colors. Token macros exist only when the
+% document has highlighted code blocks.
+\usepackage{etoolbox}
+
+% Block quotes (Markdown `>`): Pandoc uses the `quote` environment - add a left
+% bar and light fill so they read as distinct from body text.
+\usepackage{xcolor}
+\usepackage{mdframed}
+\renewenvironment{quote}{%
+  \begin{mdframed}[
+    hidealllines=true,
+    leftline=true,
+    linewidth=2.4pt,
+    linecolor=blue!50!black,
+    backgroundcolor=gray!8,
+    innerleftmargin=0.9em,
+    innerrightmargin=0.9em,
+    innertopmargin=0.55em,
+    innerbottommargin=0.55em,
+    skipabove=\smallskipamount,
+    skipbelow=\smallskipamount
+  ]%
+}{%
+  \end{mdframed}%
+}
+
+% Override Pandoc’s default white shadecolor (snugshade reads this at use time).
+\AtEndPreamble{%
+  \definecolor{shadecolor}{RGB}{248,248,248}%
+}
+
+\AtEndPreamble{%
+  \ifdef{\KeywordTok}{%
+    \renewcommand{\KeywordTok}[1]{\textcolor[HTML]{003d7a}{\textbf{#1}}}}{}%
+  \ifdef{\ControlFlowTok}{%
+    \renewcommand{\ControlFlowTok}[1]{\textcolor[HTML]{003d7a}{\textbf{#1}}}}{}%
+  \ifdef{\DataTypeTok}{%
+    \renewcommand{\DataTypeTok}[1]{\textcolor[HTML]{003d7a}{#1}}}{}%
+  \ifdef{\BuiltInTok}{%
+    \renewcommand{\BuiltInTok}[1]{\textcolor[HTML]{003d7a}{\textbf{#1}}}}{}%
+  \ifdef{\ImportTok}{%
+    \renewcommand{\ImportTok}[1]{\textcolor[HTML]{003d7a}{\textbf{#1}}}}{}%
+  \ifdef{\StringTok}{%
+    \renewcommand{\StringTok}[1]{\textcolor[HTML]{0a7a8a}{#1}}}{}%
+  \ifdef{\SpecialStringTok}{%
+    \renewcommand{\SpecialStringTok}[1]{\textcolor[HTML]{0a7a8a}{#1}}}{}%
+  \ifdef{\CharTok}{%
+    \renewcommand{\CharTok}[1]{\textcolor[HTML]{0a7a8a}{#1}}}{}%
+  \ifdef{\CommentTok}{%
+    \renewcommand{\CommentTok}[1]{\textcolor[HTML]{888888}{\textit{#1}}}}{}%
+  \ifdef{\DocumentationTok}{%
+    \renewcommand{\DocumentationTok}[1]{\textcolor[HTML]{888888}{\textit{#1}}}}{}%
+  \ifdef{\CommentVarTok}{%
+    \renewcommand{\CommentVarTok}[1]{\textcolor[HTML]{6a8a9a}{\textit{#1}}}}{}%
+  \ifdef{\FunctionTok}{%
+    \renewcommand{\FunctionTok}[1]{\textcolor[HTML]{004080}{#1}}}{}%
+  \ifdef{\VariableTok}{%
+    \renewcommand{\VariableTok}[1]{\textcolor[HTML]{003d7a}{#1}}}{}%
+  \ifdef{\AttributeTok}{%
+    \renewcommand{\AttributeTok}[1]{\textcolor[HTML]{003d7a}{#1}}}{}%
+}
+
+% Reference list (citeproc / APA 7): hanging indent 0.5 in. Pandoc defines \cslhangindent only when
+% --citeproc runs; skip when there is no bibliography so the build works without a .bib file.
+\ifdef{\cslhangindent}{\setlength{\cslhangindent}{0.5in}}{}

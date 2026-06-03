@@ -1,0 +1,39 @@
+{
+  "name": "@skxv/leafmark",
+  "version": "0.1.0",
+  "description": "Comprehensive Markdown to PDF and HTML builder powered by Pandoc.",
+  "type": "module",
+  "bin": {
+    "leafmark": "./lib/build.js"
+  },
+  "files": [
+    "lib",
+    "src/*.lua",
+    "src/*.tex",
+    "src/*.latex",
+    "src/*.css",
+    "src/csl",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/build.ts",
+    "leafmark": "tsx src/build.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "chokidar": "^3.6.0",
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
