@@ -6,7 +6,7 @@ export type AuthorOrcidLine = {
 export type AuthorLine = string | AuthorOrcidLine;
 /** One author: ordered lines (name, id, email, orcid, …). */
 export type AuthorEntry = AuthorLine[];
-/** Normalized thesis metadata (from `project/_frontmatter.md` + defaults). */
+/** Normalized document metadata from project config, optional front matter, and defaults. */
 export type ThesisMeta = {
     title: string;
     subtitle: string;
