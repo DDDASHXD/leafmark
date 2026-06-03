@@ -247,6 +247,20 @@ function kpsewhich(fname: string): string | null {
   }
 }
 
+function pandocHighlightArg(): string {
+  try {
+    const help = execFileSync('pandoc', ['--help'], {
+      encoding: 'utf-8',
+      maxBuffer: 2_000_000,
+    });
+    return help.includes('--syntax-highlighting')
+      ? '--syntax-highlighting=kate'
+      : '--highlight-style=kate';
+  } catch {
+    return '--highlight-style=kate';
+  }
+}
+
 async function ensureFirstRunTools(opts: CliOptions): Promise<void> {
   if (opts.skipToolsCheck || opts.command === 'init') return;
   if (existsSync(FIRST_RUN_MARKER)) return;
@@ -603,7 +617,7 @@ async function runPandocPdf(
     '--output=' + texPath(outputPdfAbs),
     '--template=' + texPath(latexTemplate),
     '--resource-path=' + pandocResourcePath(ctx),
-    '--highlight-style=kate',
+    pandocHighlightArg(),
     '--pdf-engine=' + engine,
     ...extraMeta,
   ];
@@ -642,7 +656,7 @@ async function runPandocHtml(
     '--output=' + texPath(htmlOutAbs),
     '--resource-path=' + pandocResourcePath(ctx),
     '--standalone',
-    '--highlight-style=kate',
+    pandocHighlightArg(),
     '--embed-resources',
   ];
 

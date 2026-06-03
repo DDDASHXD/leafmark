@@ -2,26 +2,22 @@
 % document has highlighted code blocks.
 \usepackage{etoolbox}
 
-% Block quotes (Markdown `>`): Pandoc uses the `quote` environment - add a left
-% bar and light fill so they read as distinct from body text.
+% Block quotes (Markdown `>`): keep this dependency-light so PDF output works
+% with smaller TeX installs.
 \usepackage{xcolor}
-\usepackage{mdframed}
 \renewenvironment{quote}{%
-  \begin{mdframed}[
-    hidealllines=true,
-    leftline=true,
-    linewidth=2.4pt,
-    linecolor=blue!50!black,
-    backgroundcolor=gray!8,
-    innerleftmargin=0.9em,
-    innerrightmargin=0.9em,
-    innertopmargin=0.55em,
-    innerbottommargin=0.55em,
-    skipabove=\smallskipamount,
-    skipbelow=\smallskipamount
-  ]%
+  \list{}{%
+    \leftmargin=1.4em%
+    \rightmargin=0.6em%
+    \parsep=0.35em%
+    \topsep=0.65em%
+  }%
+  \item\relax%
+  \begingroup%
+  \color{black!82}%
 }{%
-  \end{mdframed}%
+  \endgroup%
+  \endlist%
 }
 
 % Override Pandoc’s default white shadecolor (snugshade reads this at use time).
