@@ -1,7 +1,7 @@
 import { existsSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { die } from '../system/errors.js';
-import { FRONTMATTER_FILE, PROJECT_CONFIG_FILE } from './config.js';
+import { FRONTMATTER_FILE, LEGACY_PROJECT_CONFIG_FILE, PROJECT_CONFIG_FILE } from './config.js';
 
 export type Workspace = {
   cwd: string;
@@ -47,5 +47,7 @@ export function discoverWorkspace(targetArg: string | null): Workspace {
 }
 
 export function isLeafmarkProject(dir: string): boolean {
-  return existsSync(join(dir, PROJECT_CONFIG_FILE)) || existsSync(join(dir, FRONTMATTER_FILE));
+  return existsSync(join(dir, PROJECT_CONFIG_FILE))
+    || existsSync(join(dir, LEGACY_PROJECT_CONFIG_FILE))
+    || existsSync(join(dir, FRONTMATTER_FILE));
 }

@@ -1,0 +1,79 @@
+@page {
+  size: a4;
+  margin: 2.4cm 3.2cm;
+}
+
+html {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 11pt;
+  line-height: 1.55;
+  color: #1d1d1b;
+}
+
+body {
+  max-width: 100%;
+  hyphens: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: 700;
+  line-height: 1.22;
+  color: #111;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin: 2.1rem 0 0.8rem;
+}
+
+h2 {
+  font-size: 1.38rem;
+  margin: 1.8rem 0 0.65rem;
+}
+
+h3 {
+  font-size: 1.15rem;
+  margin: 1.45rem 0 0.5rem;
+}
+
+p {
+  margin: 0.7rem 0;
+}
+
+blockquote {
+  margin: 1rem 0;
+  padding: 0.2rem 0 0.2rem 1rem;
+  border-left: 2px solid #8a8a7a;
+  color: #3d3d36;
+}
+
+code,
+pre {
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+code {
+  font-size: 0.9em;
+  background: #f7f7f4;
+  border: 1px solid #deded4;
+  border-radius: 3px;
+  padding: 0.1em 0.32em;
+}
+
+pre {
+  background: #f7f7f4;
+  border: 1px solid #deded4;
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+}
+
+pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}

@@ -11,13 +11,13 @@ export async function orderProject(workspace: Workspace): Promise<void> {
   if (files.length === 0) die(`No Markdown chapter files found in ${projectDir}`, 1);
   if (!input.isTTY || !output.isTTY) {
     updateProjectOrder(projectDir, files);
-    console.log(`Saved ${files.length} file(s) to leafmark.json`);
+    console.log(`Saved ${files.length} file(s) to .leafmark/config.json`);
     return;
   }
 
   const ordered = await interactiveOrder(files);
   updateProjectOrder(projectDir, ordered);
-  console.log(`Saved order to leafmark.json`);
+  console.log(`Saved order to .leafmark/config.json`);
 }
 
 function applyInitialOrder(files: string[], order: string[]): string[] {

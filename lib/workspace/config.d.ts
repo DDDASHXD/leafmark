@@ -1,4 +1,6 @@
-export declare const PROJECT_CONFIG_FILE = "leafmark.json";
+export declare const LEAFMARK_DIR = ".leafmark";
+export declare const PROJECT_CONFIG_FILE: string;
+export declare const LEGACY_PROJECT_CONFIG_FILE = "leafmark.json";
 export declare const FRONTMATTER_FILE = "_frontmatter.md";
 export type LeafmarkPluginConfig = string | {
     path?: string;
@@ -16,6 +18,8 @@ export type LeafmarkConfig = {
     fonts?: {
         pdf?: string;
         mono?: string;
+        pdfFiles?: LeafmarkFontFiles;
+        monoFiles?: LeafmarkFontFiles;
         css?: string[];
         latexInclude?: string;
     };
@@ -27,7 +31,16 @@ export type LeafmarkConfig = {
     };
     metadata?: Record<string, unknown>;
 };
+export type LeafmarkFontFiles = {
+    path?: string;
+    upright: string;
+    bold?: string;
+    italic?: string;
+    boldItalic?: string;
+    scale?: number;
+};
 export declare function configPath(projectDir: string): string;
+export declare function legacyConfigPath(projectDir: string): string;
 export declare function readProjectConfig(projectDir: string): LeafmarkConfig;
 export declare function writeProjectConfig(projectDir: string, config: LeafmarkConfig): void;
 export declare function updateProjectOrder(projectDir: string, order: string[]): void;

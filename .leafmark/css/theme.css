@@ -1,0 +1,31 @@
+/* Custom Leafmark HTML/print theme. */
+
+/* Example local font setup if you add files to .leafmark/fonts/:
+@font-face {
+  font-family: "Theme Font";
+  src: url("../fonts/YourFont-Regular.ttf") format("truetype");
+}
+*/
+
+@page {
+  size: a4;
+  margin: 2cm 2.5cm;
+}
+
+html {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 11pt;
+  line-height: 1.5;
+  color: #1a1a1a;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+pre,
+code {
+  font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+}

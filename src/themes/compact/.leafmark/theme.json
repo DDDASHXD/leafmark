@@ -1,0 +1,14 @@
+{
+  "name": "compact",
+  "description": "Space-efficient single-column style for drafts and review copies.",
+  "config": {
+    "latexTemplate": ".leafmark/theme/templates/compact.latex",
+    "fonts": {
+      "latexInclude": ".leafmark/theme/includes/compact.tex",
+      "css": [".leafmark/theme/css/compact.css"]
+    },
+    "pandoc": {
+      "pdfArgs": ["-V", "geometry=left=2.1cm,right=2.1cm,top=1.7cm,bottom=1.7cm"]
+    }
+  }
+}

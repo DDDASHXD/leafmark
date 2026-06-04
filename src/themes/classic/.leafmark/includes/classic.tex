@@ -1,0 +1,36 @@
+% Leafmark classic PDF theme.
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{microtype}
+\IfFileExists{orcidlink.sty}{\usepackage{orcidlink}}{\providecommand{\orcidlink}[1]{}}
+\IfFontExistsTF{texgyrepagella-regular.otf}{%
+  \setmainfont{texgyrepagella-regular.otf}[
+    BoldFont = texgyrepagella-bold.otf,
+    ItalicFont = texgyrepagella-italic.otf,
+    BoldItalicFont = texgyrepagella-bolditalic.otf
+  ]%
+  \setmonofont{texgyrecursor-regular.otf}[
+    BoldFont = texgyrecursor-bold.otf,
+    ItalicFont = texgyrecursor-italic.otf,
+    BoldItalicFont = texgyrecursor-bolditalic.otf,
+    Scale = 0.9
+  ]%
+}{}
+\AtEndPreamble{%
+  \definecolor{shadecolor}{RGB}{247,247,244}%
+}
+\renewenvironment{quote}{%
+  \list{}{%
+    \leftmargin=1.35em%
+    \rightmargin=0.5em%
+    \parsep=0.35em%
+    \topsep=0.65em%
+  }%
+  \item\relax%
+  \begingroup%
+  \color{black!78}%
+}{%
+  \endgroup%
+  \endlist%
+}
+\ifdef{\cslhangindent}{\setlength{\cslhangindent}{0.5in}}{}

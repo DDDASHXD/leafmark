@@ -1,0 +1,314 @@
+/* HTML / print (Pandoc --html). Clean sans body, monospace code, serif math - academic “IDE-like” look. */
+
+@page {
+  size: a4;
+  margin-left: 3cm;
+  margin-right: 3cm;
+  margin-top: 2cm;
+  margin-bottom: 2cm;
+}
+
+:root {
+  --text: #1a1a1a;
+  --muted: #666;
+  --code-bg: #f8f8f8;
+  --code-border: #d8d8d8;
+  --link: #0b57d0;
+  --kw: #003d7a;
+  --string: #0a7a8a;
+  --comment: #888888;
+  --type: #003d7a;
+}
+
+html {
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Helvetica,
+    Arial,
+    sans-serif;
+  font-size: 11pt;
+  line-height: 1.5;
+  color: var(--text);
+  text-align: left;
+}
+
+body {
+  max-width: 100%;
+  hyphens: auto;
+}
+
+/* Headings: bold sans, airy spacing */
+h1,
+h2,
+h3,
+h4 {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #111;
+}
+
+h1 {
+  font-size: 1.65rem;
+  margin: 2rem 0 0.75rem;
+}
+
+h2 {
+  font-size: 1.35rem;
+  margin: 1.75rem 0 0.65rem;
+}
+
+h3 {
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.55rem;
+}
+
+p {
+  margin: 0.65rem 0;
+}
+
+/* Block quotes (`>` in Markdown): left accent + panel (Pandoc emits <blockquote>) */
+blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid #0b57d0;
+  background: rgba(248, 248, 250, 0.98);
+  color: var(--text);
+}
+
+blockquote p {
+  margin: 0.35rem 0;
+}
+
+blockquote p:first-child {
+  margin-top: 0;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Math: serif, centered display (like LaTeX) */
+span.math,
+.display.math {
+  font-family: 'Latin Modern Math', 'STIX Two Math', 'Times New Roman', Times, serif;
+}
+
+.display.math {
+  display: block;
+  text-align: center;
+  margin: 1rem auto;
+}
+
+/* Lists */
+ul,
+ol {
+  margin: 0.65rem 0;
+  padding-left: 1.5rem;
+}
+
+li {
+  margin: 0.25rem 0;
+}
+
+/* Code: light panel, thin border, monospace */
+code {
+  font-family:
+    ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: rgba(248, 248, 248, 0.9);
+  border: 1px solid var(--code-border);
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
+}
+
+pre,
+div.sourceCode {
+  font-family:
+    ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+div.sourceCode {
+  margin: 1rem 0;
+}
+
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+}
+
+pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Pandoc line-numbered code */
+pre.numberSource {
+  border: 1px solid var(--code-border);
+  background: var(--code-bg);
+  padding-left: 0;
+}
+
+pre.numberSource code > span {
+  display: inline-block;
+  min-width: 100%;
+}
+
+pre.numberSource code > span > a:first-child::before {
+  content: counter(line);
+  counter-increment: line;
+  display: inline-block;
+  width: 2.6em;
+  margin-right: 0.75em;
+  padding-right: 0.5em;
+  text-align: right;
+  color: #a8a8a8;
+  font-weight: 400;
+  border-right: 1px solid #e4e4e4;
+  background: #fafafa;
+}
+
+pre.numberSource {
+  counter-reset: line;
+}
+
+/* Syntax: refine Pandoc / Kate embedded colors toward blue keywords, teal strings, gray comments */
+code span.kw {
+  color: var(--kw) !important;
+  font-weight: 700 !important;
+}
+code span.cf {
+  color: var(--kw) !important;
+  font-weight: 700 !important;
+}
+code span.dt {
+  color: var(--type) !important;
+}
+code span.bu {
+  color: var(--type) !important;
+  font-weight: 700 !important;
+}
+code span.st,
+code span.vs,
+code span.ch {
+  color: var(--string) !important;
+}
+code span.co,
+code span.do {
+  color: var(--comment) !important;
+  font-style: italic !important;
+}
+code span.cv {
+  color: #6a8a9a !important;
+  font-style: italic !important;
+}
+code span.fu {
+  color: #004080 !important;
+}
+code span.at,
+code span.va {
+  color: #003d7a !important;
+}
+
+#TOC {
+  margin: 2rem 0;
+  font-size: 0.98em;
+}
+
+#TOC ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#TOC ul ul {
+  padding-left: 1.25rem;
+}
+
+#TOC a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+#TOC a:hover {
+  text-decoration: underline;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Title block */
+header#title-block-header .title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+header#title-block-header .subtitle {
+  font-weight: 400;
+  color: var(--muted);
+  margin: 0.5rem 0 1rem;
+}
+
+header#title-block-header .author {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.25rem 2.5rem;
+  margin: 0.75rem 0 0.5rem;
+  text-align: center;
+  line-height: 1.45;
+}
+
+header#title-block-header .author br + br {
+  display: none;
+}
+
+header#title-block-header .author a.orcid-link {
+  display: inline;
+  margin-left: 0.3rem;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+header#title-block-header .author a.orcid-link img.orcid-icon {
+  width: 1rem;
+  height: 1rem;
+  vertical-align: middle;
+  border: none;
+}
+
+header#title-block-header .date {
+  margin: 0.25rem 0;
+}
+
+/* Reference list: new page when printing from HTML */
+#refs.references {
+  page-break-before: always;
+  break-before: page;
+}
+
+/* Citations / refs - APA 7: hanging indent 0.5 in on second+ lines */
+#refs.references.hanging-indent div.csl-entry,
+.hanging-indent div.csl-entry {
+  margin-left: 0.5in;
+  text-indent: -0.5in;
+  margin-bottom: 0.65rem;
+}

@@ -1,0 +1,15 @@
+% Custom Leafmark PDF theme include.
+% Put LaTeX packages, fontspec settings, colors, and spacing here.
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\IfFileExists{orcidlink.sty}{\usepackage{orcidlink}}{\providecommand{\orcidlink}[1]{}}
+\AtEndPreamble{%
+  \definecolor{shadecolor}{RGB}{248,248,248}%
+}
+
+% Example local font setup if you add files to .leafmark/fonts/:
+% \setmainfont{YourFont-Regular.ttf}[
+%   Path = ../.leafmark/fonts/,
+%   BoldFont = YourFont-Bold.ttf,
+%   ItalicFont = YourFont-Italic.ttf,
+% ]

@@ -1,0 +1,83 @@
+@font-face {
+  font-family: "Leafmark Lora";
+  src: url("../fonts/Lora.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400 700;
+}
+
+@font-face {
+  font-family: "Leafmark Lora";
+  src: url("../fonts/Lora-Italic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 400 700;
+}
+
+@page {
+  size: a4;
+  margin: 1.8cm 1.7cm;
+}
+
+html {
+  font-family: "Leafmark Lora", Georgia, "Times New Roman", Times, serif;
+  font-size: 10pt;
+  line-height: 1.42;
+  color: #191919;
+}
+
+body {
+  column-count: 2;
+  column-gap: 1.3cm;
+  hyphens: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+figure,
+table,
+pre,
+blockquote {
+  break-inside: avoid;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 700;
+  line-height: 1.18;
+}
+
+h1 {
+  font-size: 1.45rem;
+  margin: 0 0 0.7rem;
+  column-span: all;
+}
+
+h2 {
+  font-size: 1.12rem;
+  margin: 1.1rem 0 0.4rem;
+}
+
+h3 {
+  font-size: 1rem;
+  margin: 0.9rem 0 0.35rem;
+}
+
+p {
+  margin: 0.45rem 0;
+}
+
+pre {
+  background: #f8f8f8;
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
+  padding: 0.6rem;
+  overflow-x: auto;
+}
+
+code {
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.85em;
+}

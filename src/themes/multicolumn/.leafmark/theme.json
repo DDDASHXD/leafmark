@@ -1,0 +1,22 @@
+{
+  "name": "multicolumn",
+  "description": "Two-column article layout for dense notes, papers, and handouts.",
+  "config": {
+    "latexTemplate": ".leafmark/theme/templates/multicolumn.latex",
+    "fonts": {
+      "pdfFiles": {
+        "path": ".leafmark/theme/fonts",
+        "upright": "Lora.ttf",
+        "bold": "Lora.ttf",
+        "italic": "Lora-Italic.ttf",
+        "boldItalic": "Lora-Italic.ttf",
+        "scale": 0.94
+      },
+      "latexInclude": ".leafmark/theme/includes/multicolumn.tex",
+      "css": [".leafmark/theme/css/multicolumn.css"]
+    },
+    "pandoc": {
+      "pdfArgs": ["-V", "geometry=left=1.7cm,right=1.7cm,top=1.8cm,bottom=1.8cm"]
+    }
+  }
+}

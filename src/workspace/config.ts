@@ -1,8 +1,10 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { isAbsolute, join } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, isAbsolute, join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 
-export const PROJECT_CONFIG_FILE = 'leafmark.json';
+export const LEAFMARK_DIR = '.leafmark';
+export const PROJECT_CONFIG_FILE = join(LEAFMARK_DIR, 'config.json');
+export const LEGACY_PROJECT_CONFIG_FILE = 'leafmark.json';
 export const FRONTMATTER_FILE = '_frontmatter.md';
 
 export type LeafmarkPluginConfig =
@@ -24,6 +26,8 @@ export type LeafmarkConfig = {
   fonts?: {
     pdf?: string;
     mono?: string;
+    pdfFiles?: LeafmarkFontFiles;
+    monoFiles?: LeafmarkFontFiles;
     css?: string[];
     latexInclude?: string;
   };
@@ -36,21 +40,37 @@ export type LeafmarkConfig = {
   metadata?: Record<string, unknown>;
 };
 
+export type LeafmarkFontFiles = {
+  path?: string;
+  upright: string;
+  bold?: string;
+  italic?: string;
+  boldItalic?: string;
+  scale?: number;
+};
+
 export function configPath(projectDir: string): string {
   return join(projectDir, PROJECT_CONFIG_FILE);
 }
 
+export function legacyConfigPath(projectDir: string): string {
+  return join(projectDir, LEGACY_PROJECT_CONFIG_FILE);
+}
+
 export function readProjectConfig(projectDir: string): LeafmarkConfig {
   const p = configPath(projectDir);
-  if (!existsSync(p)) return {};
-  const parsed = JSON.parse(readFileSync(p, 'utf-8')) as unknown;
+  const legacy = legacyConfigPath(projectDir);
+  const readable = existsSync(p) ? p : existsSync(legacy) ? legacy : null;
+  if (!readable) return {};
+  const parsed = JSON.parse(readFileSync(readable, 'utf-8')) as unknown;
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-    throw new Error(`Invalid ${PROJECT_CONFIG_FILE}: expected a JSON object`);
+    throw new Error(`Invalid ${readable}: expected a JSON object`);
   }
   return parsed as LeafmarkConfig;
 }
 
 export function writeProjectConfig(projectDir: string, config: LeafmarkConfig): void {
+  mkdirSync(dirname(configPath(projectDir)), { recursive: true });
   writeFileSync(configPath(projectDir), `${JSON.stringify(config, null, 2)}\n`, 'utf-8');
 }
 

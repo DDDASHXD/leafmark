@@ -1,0 +1,11 @@
+{
+  "name": "default",
+  "description": "Current Leafmark thesis style with sans text and code-friendly output.",
+  "config": {
+    "latexTemplate": ".leafmark/theme/templates/default.latex",
+    "fonts": {
+      "latexInclude": ".leafmark/theme/includes/default.tex",
+      "css": [".leafmark/theme/css/default.css"]
+    }
+  }
+}

@@ -1,6 +1,7 @@
-export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order';
+export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order' | 'theme';
 export type CliOptions = {
     command: Command;
+    themeCommand: 'init' | 'list' | 'use' | null;
     targetArg: string | null;
     positional: string[];
     wantHelp: boolean;

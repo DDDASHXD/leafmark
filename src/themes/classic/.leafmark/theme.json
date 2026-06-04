@@ -1,0 +1,14 @@
+{
+  "name": "classic",
+  "description": "Serif academic report with restrained headings and traditional spacing.",
+  "config": {
+    "latexTemplate": ".leafmark/theme/templates/classic.latex",
+    "fonts": {
+      "latexInclude": ".leafmark/theme/includes/classic.tex",
+      "css": [".leafmark/theme/css/classic.css"]
+    },
+    "pandoc": {
+      "pdfArgs": ["-V", "geometry=left=3.2cm,right=3.2cm,top=2.4cm,bottom=2.4cm"]
+    }
+  }
+}

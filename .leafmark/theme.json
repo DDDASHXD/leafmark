@@ -1,0 +1,19 @@
+{
+  "name": "my-theme",
+  "description": "A custom Leafmark theme.",
+  "config": {
+    "latexTemplate": ".leafmark/theme/templates/theme.latex",
+    "fonts": {
+      "latexInclude": ".leafmark/theme/includes/theme.tex",
+      "css": [
+        ".leafmark/theme/css/theme.css"
+      ]
+    },
+    "pandoc": {
+      "pdfArgs": [
+        "-V",
+        "geometry=left=2.5cm,right=2.5cm,top=2cm,bottom=2cm"
+      ]
+    }
+  }
+}

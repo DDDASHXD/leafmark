@@ -13,10 +13,11 @@ const KNOWN_FLAGS = new Set([
   '--skip-tools-check',
 ]);
 
-export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order';
+export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order' | 'theme';
 
 export type CliOptions = {
   command: Command;
+  themeCommand: 'init' | 'list' | 'use' | null;
   targetArg: string | null;
   positional: string[];
   wantHelp: boolean;
@@ -36,6 +37,7 @@ const COMMAND_ALIASES: Record<string, Command> = {
   organize: 'order',
   organise: 'order',
   o: 'order',
+  theme: 'theme',
 };
 
 export function printHelp(): void {
@@ -46,10 +48,13 @@ export function printHelp(): void {
   leafmark o [folder]
   leafmark doctor
   leafmark init [folder]
+  leafmark theme init [folder]
+  leafmark theme list
+  leafmark theme use <theme name | GitHub URL>
 
 Builds Markdown to PDF from a folder of .md files. Metadata can live in
-leafmark.json, _frontmatter.md, or both. Chapter files no longer need numeric
-prefixes; saved order comes from leafmark.json.
+.leafmark/config.json, _frontmatter.md, or both. Chapter files no longer need
+numeric prefixes; saved order comes from .leafmark/config.json.
 
 Options:
   --html            Also write thesis.html
@@ -64,11 +69,17 @@ Options:
 
 export function parseCli(argv: string[]): CliOptions {
   let command: Command = 'build';
+  let themeCommand: 'init' | 'list' | 'use' | null = null;
   const args = [...argv];
   const first = args[0] ? COMMAND_ALIASES[args[0]] : undefined;
   if (first) {
     command = first;
     args.shift();
+  }
+  if (command === 'theme') {
+    const subcommand = args.shift();
+    if (subcommand === 'init' || subcommand === 'list' || subcommand === 'use') themeCommand = subcommand;
+    else if (subcommand && !subcommand.startsWith('-')) die(`Unknown theme command: ${subcommand}`, 1);
   }
 
   const wantHelp = args.includes('--help') || args.includes('-h');
@@ -98,6 +109,7 @@ export function parseCli(argv: string[]): CliOptions {
 
   return {
     command,
+    themeCommand,
     targetArg,
     positional,
     wantHelp,

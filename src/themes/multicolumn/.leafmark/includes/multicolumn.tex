@@ -1,0 +1,59 @@
+% Leafmark multicolumn PDF theme.
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{microtype}
+\usepackage{environ}
+\IfFileExists{orcidlink.sty}{\usepackage{orcidlink}}{\providecommand{\orcidlink}[1]{}}
+\IfFontExistsTF{texgyreheros-regular.otf}{%
+  \setmainfont{texgyreheros-regular.otf}[
+    BoldFont = texgyreheros-bold.otf,
+    ItalicFont = texgyreheros-italic.otf,
+    BoldItalicFont = texgyreheros-bolditalic.otf,
+    Scale = 0.94
+  ]%
+  \setmonofont{texgyrecursor-regular.otf}[
+    BoldFont = texgyrecursor-bold.otf,
+    ItalicFont = texgyrecursor-italic.otf,
+    BoldItalicFont = texgyrecursor-bolditalic.otf,
+    Scale = 0.84
+  ]%
+}{%
+  \usepackage[scaled=0.95]{helvet}%
+  \renewcommand{\familydefault}{\sfdefault}%
+}
+\AtEndPreamble{%
+  \definecolor{shadecolor}{RGB}{248,248,248}%
+}
+\makeatletter
+\AtBeginDocument{%
+  \@ifundefined{longtable}{}{%
+    \let\leafmarkoldlongtable\longtable%
+    \let\endleafmarkoldlongtable\endlongtable%
+    \RenewEnviron{longtable}[1]{%
+      \end{multicols}%
+      \begin{leafmarkoldlongtable}{##1}%
+      \BODY%
+      \end{leafmarkoldlongtable}%
+      \begin{multicols}{2}%
+      \setlength{\textwidth}{\columnwidth}%
+    }%
+  }%
+}
+\makeatother
+\renewenvironment{quote}{%
+  \list{}{%
+    \leftmargin=1em%
+    \rightmargin=0.25em%
+    \parsep=0.25em%
+    \topsep=0.45em%
+  }%
+  \item\relax%
+  \begingroup%
+  \small%
+  \color{black!78}%
+}{%
+  \endgroup%
+  \endlist%
+}
+\ifdef{\cslhangindent}{\setlength{\cslhangindent}{0.5in}}{}

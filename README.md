@@ -27,11 +27,15 @@ pnpx @skxv/leafmark watch              # rebuild continuously
 pnpx @skxv/leafmark o                  # arrange chapters with arrow keys
 pnpx @skxv/leafmark organize           # same as `o`
 pnpx @skxv/leafmark init ./my-project  # create a starter markdown folder
+pnpx @skxv/leafmark theme init ./theme # create a theme repository scaffold
+pnpx @skxv/leafmark theme list         # list builtin themes
+pnpx @skxv/leafmark theme use default  # install a builtin theme
+pnpx @skxv/leafmark theme use https://github.com/user/theme-repo
 pnpx @skxv/leafmark doctor             # check external tools
 ```
 
-Bundles are supported when a subfolder contains its own `leafmark.json` or
-`_frontmatter.md`:
+Bundles are supported when a subfolder contains its own `.leafmark/config.json`
+or `_frontmatter.md`:
 
 ```sh
 pnpx @skxv/leafmark ./project-folder analysis
@@ -42,19 +46,21 @@ pnpx @skxv/leafmark ./project-folder analysis
 A standalone folder should contain:
 
 ```text
-leafmark.json
+.leafmark/
+  config.json
 introduction.md
 method.md
 sources.bib
 ```
 
-`leafmark.json` is optional, but it is where Leafmark saves chapter order and
-project extensions. `_frontmatter.md` is still supported for YAML metadata, but
-it is no longer required. Markdown chapter files do not need numeric prefixes.
-When no saved order exists, numbered files sort first by numeric prefix and all
-other markdown files sort naturally by filename.
+`.leafmark/config.json` is optional, but it is where Leafmark saves chapter
+order, theme choices, and project extensions. `_frontmatter.md` is still
+supported for YAML metadata, but it is no longer required. Markdown chapter
+files do not need numeric prefixes. When no saved order exists, numbered files
+sort first by numeric prefix and all other markdown files sort naturally by
+filename.
 
-Example `leafmark.json`:
+Example `.leafmark/config.json`:
 
 ```json
 {
@@ -85,6 +91,33 @@ Example `leafmark.json`:
   }
 }
 ```
+
+## Themes
+
+Builtin themes are packaged like standalone theme repositories:
+
+```text
+src/themes/default/
+  .leafmark/
+    theme.json
+    templates/
+    includes/
+    css/
+```
+
+A GitHub theme should expose the same `.leafmark` folder at the repository root.
+Running `theme use` copies the theme files into your project under
+`.leafmark/theme/` and updates `.leafmark/config.json`.
+
+Create a new theme scaffold with:
+
+```sh
+pnpx @skxv/leafmark theme init ./my-theme
+```
+
+The scaffold includes `.leafmark/theme.json`, template/include/CSS folders, an
+ignored `project/` test document, and `INSTRUCTIONS.md` for theme authors and
+agents.
 
 ## External Tools
 
