@@ -31,10 +31,10 @@ export type ThesisMeta = {
   headerLeft: string;
   headerCenter: string;
   headerRight: string;
-  /** `undefined` = default `\\today`; `""` = empty */
+  /** `undefined` = default document date, then `\\today`; `""` = empty */
   footerLeft?: string;
   footerCenter: string;
-  /** `undefined` = default “Page \\thepage”; `""` = empty */
+  /** `undefined` = default `\\thepage`; `""` = empty */
   footerRight?: string;
   /** When false, PDF/HTML omit the formatted title block (`\\maketitle` / HTML header). Default true. */
   titlePage: boolean;
@@ -294,7 +294,10 @@ function footCell(kind: 'L' | 'C' | 'R', inner: string): string {
 }
 
 function footerLeftLine(meta: ThesisMeta): string {
-  if (meta.footerLeft === undefined) return footCell('L', '\\footnotesize \\today');
+  if (meta.footerLeft === undefined) {
+    const date = meta.date ? escapeLatex(meta.date) : '\\today';
+    return footCell('L', `\\footnotesize ${date}`);
+  }
   if (meta.footerLeft === '') return footCell('L', '');
   return footCell('L', `\\footnotesize ${escapeLatex(meta.footerLeft)}`);
 }
@@ -305,8 +308,7 @@ function footerCenterLine(meta: ThesisMeta): string {
 }
 
 function footerRightLine(meta: ThesisMeta): string {
-  if (meta.footerRight === undefined)
-    return footCell('R', '\\footnotesize Page \\thepage');
+  if (meta.footerRight === undefined) return footCell('R', '\\footnotesize \\thepage');
   if (meta.footerRight === '') return footCell('R', '');
   return footCell('R', `\\footnotesize ${escapeLatex(meta.footerRight)}`);
 }
@@ -522,7 +524,8 @@ export function writeBuildLatexIncludes(
   meta: ThesisMeta,
   distDir: string,
   srcDir: string,
-  fontsRelToRoot: string
+  fontsRelToRoot: string,
+  options: { includeFonts?: boolean } = {}
 ): void {
   const latexStyle = join(srcDir, 'latex-style.tex').replace(/\\/g, '/');
   const fonts = fontsRelToRoot.replace(/\\/g, '/');
@@ -544,7 +547,7 @@ export function writeBuildLatexIncludes(
     '\\usepackage{graphicx}',
     '\\usepackage{pdfpages}',
     ...orcidPkg,
-    `\\input{${fonts}}`,
+    ...(options.includeFonts === false ? [] : [`\\input{${fonts}}`]),
     fancy,
     `\\input{${latexStyle}}`,
     '',

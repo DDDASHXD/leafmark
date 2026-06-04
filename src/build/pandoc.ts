@@ -210,13 +210,16 @@ export async function runPandocPdf(params: {
   mergedFile: string;
   latexTemplate: string;
   useThesisHeaderIncludes: boolean;
+  includeFontsInThesisHeaderIncludes: boolean;
   useDefaultGeometry: boolean;
 }): Promise<void> {
   const { merged, meta, bibPaths, extraMeta, outputPdfAbs, ctx, mergedFile, latexTemplate } = params;
   const fontsRel = fontsTexRelFromDist(ctx);
   writePdfFontSnippet(ctx);
   if (params.useThesisHeaderIncludes) {
-    writeBuildLatexIncludes(meta, ctx.distDir, RESOURCE_DIR, fontsRel);
+    writeBuildLatexIncludes(meta, ctx.distDir, RESOURCE_DIR, fontsRel, {
+      includeFonts: params.includeFontsInThesisHeaderIncludes,
+    });
   }
 
   const engine = pickPdfEngine();

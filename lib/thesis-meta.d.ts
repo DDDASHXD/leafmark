@@ -25,10 +25,10 @@ export type ThesisMeta = {
     headerLeft: string;
     headerCenter: string;
     headerRight: string;
-    /** `undefined` = default `\\today`; `""` = empty */
+    /** `undefined` = default document date, then `\\today`; `""` = empty */
     footerLeft?: string;
     footerCenter: string;
-    /** `undefined` = default “Page \\thepage”; `""` = empty */
+    /** `undefined` = default `\\thepage`; `""` = empty */
     footerRight?: string;
     /** When false, PDF/HTML omit the formatted title block (`\\maketitle` / HTML header). Default true. */
     titlePage: boolean;
@@ -71,4 +71,6 @@ export type MergedYamlOptions = {
 };
 /** YAML block for the merged document (no LaTeX `header-includes`; citeproc paths are passed via CLI). */
 export declare function mergedYamlDocument(meta: ThesisMeta, raw: Record<string, unknown>, options?: MergedYamlOptions): string;
-export declare function writeBuildLatexIncludes(meta: ThesisMeta, distDir: string, srcDir: string, fontsRelToRoot: string): void;
+export declare function writeBuildLatexIncludes(meta: ThesisMeta, distDir: string, srcDir: string, fontsRelToRoot: string, options?: {
+    includeFonts?: boolean;
+}): void;

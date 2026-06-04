@@ -97,7 +97,8 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
   }
 
   const latexTemplate = customLatex ?? defaultLatexTemplate(ctx);
-  const useThesisHeaderIncludes = !customLatex;
+  const useThesisHeaderIncludes = true;
+  const includeFontsInThesisHeaderIncludes = !customLatex;
   const useDefaultGeometry = !customLatex;
 
   if (opts.wantHtml) {
@@ -116,6 +117,7 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
       mergedFile,
       latexTemplate,
       useThesisHeaderIncludes,
+      includeFontsInThesisHeaderIncludes,
       useDefaultGeometry,
     });
 

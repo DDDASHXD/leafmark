@@ -109,6 +109,102 @@ A GitHub theme should expose the same `.leafmark` folder at the repository root.
 Running `theme use` copies the theme files into your project under
 `.leafmark/theme/` and updates `.leafmark/config.json`.
 
+List packaged themes with:
+
+```sh
+pnpx @skxv/leafmark theme list
+```
+
+Builtin themes:
+
+- `default` - current Leafmark thesis style with sans text and code-friendly output.
+- `classic` - serif academic report with restrained headings and traditional spacing.
+- `compact` - space-efficient single-column style for drafts and review copies.
+- `multicolumn` - two-column article layout for dense notes, papers, and handouts.
+- `cv` - one-page CV layout with structured frontmatter and Markdown work experience.
+
+Apply a builtin theme from your project folder with:
+
+```sh
+pnpx @skxv/leafmark theme use cv
+```
+
+Theme manifests can provide default config and metadata. Project config and
+project frontmatter override those defaults, so themes can define custom
+frontmatter fields without taking ownership of the user's content.
+
+### CV Theme
+
+The `cv` theme is for a one-page resume or application CV. It uses structured
+frontmatter for profile, contact details, education, skills, and languages. The
+Markdown chapter content is treated as the work experience column.
+
+Minimal `_frontmatter.md`:
+
+```yaml
+---
+title: Alex Morgan
+subtitle: Frontend Developer
+profile: |
+  Frontend developer with experience building maintainable user interfaces,
+  design systems, and content-heavy web products.
+contact:
+  website: alexmorgan.dev
+  email: alex@example.com
+  phone: "+1 555 010 2000"
+education-title: Education
+education:
+  - institution: Example University
+    degree: BSc Computer Science
+    period: 2021 - 2024
+    description: Focused on web engineering, databases, and human-computer interaction.
+skills-title: Skills & languages
+skills-label: "Skills:"
+skills:
+  - Figma
+  - Git
+  - Next.js
+  - React
+  - TypeScript
+  - UI design
+languages-label: "Languages:"
+languages:
+  - English (native)
+  - Spanish (professional working proficiency)
+---
+```
+
+Example `experience.md`:
+
+```md
+# Acme Studio / Frontend Developer
+
+2024 - present
+
+Built production user interfaces in React and Next.js, collaborated with
+designers on reusable components, and improved frontend delivery workflows.
+
+# Northwind Labs / Web Developer
+
+2023 - 2024
+
+Developed marketing and product pages, maintained a shared design system, and
+worked with stakeholders to turn content requirements into shipped features.
+```
+
+Supported CV fields:
+
+- `title` and `subtitle` render as the name and role.
+- `profile` renders as the introductory paragraph below the header.
+- `contact.website`, `contact.email`, and `contact.phone` render in the top-right contact block.
+- `contact.lines` can add extra contact lines.
+- `experience-title` changes the left-column heading. The default is `Experience`.
+- `education-title` changes the education heading. The default is `Education`.
+- `education` is a list of entries with `institution`, `degree`, `period`, and `description`.
+- `skills-title`, `skills-label`, and `skills` control the skills block.
+- `languages-label` and `languages` control the language block.
+- `sidebar` can add extra Markdown-supported content below the right column.
+
 Create a new theme scaffold with:
 
 ```sh

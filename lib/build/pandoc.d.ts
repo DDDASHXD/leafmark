@@ -31,6 +31,7 @@ export declare function runPandocPdf(params: {
     mergedFile: string;
     latexTemplate: string;
     useThesisHeaderIncludes: boolean;
+    includeFontsInThesisHeaderIncludes: boolean;
     useDefaultGeometry: boolean;
 }): Promise<void>;
 export declare function runPandocHtml(params: {
