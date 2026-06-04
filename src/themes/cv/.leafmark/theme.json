@@ -1,0 +1,42 @@
+{
+  "name": "cv",
+  "description": "One-page CV theme with structured frontmatter for profile, contact, education, skills, and languages.",
+  "config": {
+    "frontmatter": "_frontmatter.md",
+    "latexTemplate": ".leafmark/theme/templates/cv.latex",
+    "fonts": {
+      "latexInclude": ".leafmark/theme/includes/cv.tex",
+      "css": [".leafmark/theme/css/cv.css"]
+    },
+    "metadata": {
+      "title": "Your Name",
+      "subtitle": "Role or target position",
+      "title-page": false,
+      "toc": false,
+      "number-sections": false,
+      "bibliography": false,
+      "profile": "Write a short profile or application summary here.",
+      "contact": {
+        "website": "example.dev",
+        "email": "hello@example.dev",
+        "phone": "+45 00 00 00 00"
+      },
+      "education-title": "Education",
+      "education": [
+        {
+          "institution": "University Name",
+          "degree": "Program or degree",
+          "period": "2023 - now",
+          "description": "Short description of study focus."
+        }
+      ],
+      "skills-title": "Skills & languages",
+      "skills": ["Markdown", "Pandoc", "Research"],
+      "languages": ["Danish", "English"]
+    },
+    "pandoc": {
+      "pdfArgs": ["-V", "papersize=a4"],
+      "htmlArgs": ["--metadata", "pagetitle=CV"]
+    }
+  }
+}

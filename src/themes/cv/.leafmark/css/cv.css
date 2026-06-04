@@ -1,0 +1,91 @@
+@page {
+  size: a4;
+  margin: 2cm 2.1cm;
+}
+
+:root {
+  --text: #222222;
+  --muted: #808080;
+}
+
+html {
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  font-size: 11pt;
+  line-height: 1.22;
+  color: var(--text);
+}
+
+body {
+  max-width: 100%;
+  margin: 0;
+}
+
+#title-block-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  column-gap: 2rem;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+
+#title-block-header .title {
+  margin: 0;
+  font-size: 2.55rem;
+  line-height: 1.05;
+}
+
+#title-block-header .subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 1.65rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+#title-block-header .author,
+#title-block-header .date {
+  display: none;
+}
+
+p {
+  margin: 0.35rem 0;
+}
+
+h1,
+h2 {
+  margin: 1.15rem 0 0.45rem;
+  font-size: 1rem;
+  line-height: 1.15;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+h3 {
+  margin: 0.85rem 0 0.15rem;
+  font-size: 1.05rem;
+  line-height: 1.15;
+}
+
+em {
+  color: var(--text);
+}
+
+ul,
+ol {
+  margin: 0.25rem 0 0.45rem;
+  padding-left: 1.25rem;
+}
+
+li {
+  margin: 0.08rem 0;
+}
+
+strong {
+  font-weight: 700;
+}

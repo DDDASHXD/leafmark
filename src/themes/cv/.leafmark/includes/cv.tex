@@ -1,0 +1,24 @@
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{ragged2e}
+\usepackage{titlesec}
+
+\definecolor{leafmarkCvText}{HTML}{222222}
+\definecolor{leafmarkCvMuted}{HTML}{808080}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.15em, itemsep=0.08em, parsep=0pt}
+\hypersetup{colorlinks=true, urlcolor=leafmarkCvText, linkcolor=leafmarkCvText}
+\pagestyle{empty}
+\titleformat{\section}{\large\bfseries\color{leafmarkCvMuted}}{}{0pt}{\MakeUppercase}
+\titlespacing*{\section}{0pt}{0.8em}{0.5em}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{0.7em}{0.15em}
+
+\newcommand{\cvmuted}[1]{{\color{leafmarkCvMuted}#1}}
+\newcommand{\cvsectionlabel}[1]{{\large\bfseries\color{leafmarkCvMuted}\MakeUppercase{#1}}\par\vspace{0.45em}}
+\newcommand{\cvitemtitle}[1]{{\bfseries #1}\par}
+\newcommand{\cvitemmeta}[1]{{\color{leafmarkCvMuted}#1}\par}

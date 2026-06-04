@@ -187,15 +187,26 @@ function mergeThemeConfig(current: LeafmarkConfig, theme: LeafmarkConfig): Leafm
   const out: LeafmarkConfig = {
     ...current,
     ...theme,
-    metadata: current.metadata,
+    metadata: mergeMetadata(theme.metadata, current.metadata),
     order: current.order,
-    frontmatter: current.frontmatter,
+    frontmatter: current.frontmatter ?? theme.frontmatter,
     plugins: current.plugins,
     themePlugins: theme.themePlugins ?? [],
     pandoc: theme.pandoc ?? {},
     fonts: theme.fonts ?? {},
   };
   return pruneUndefined(out);
+}
+
+function mergeMetadata(
+  theme: Record<string, unknown> | undefined,
+  current: Record<string, unknown> | undefined
+): Record<string, unknown> | undefined {
+  const out = {
+    ...(theme ?? {}),
+    ...(current ?? {}),
+  };
+  return Object.keys(out).length ? out : undefined;
 }
 
 function pruneUndefined<T extends Record<string, unknown>>(value: T): T {
