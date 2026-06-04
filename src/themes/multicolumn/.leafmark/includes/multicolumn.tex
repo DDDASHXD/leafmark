@@ -3,7 +3,6 @@
 \usepackage{xcolor}
 \usepackage{multicol}
 \usepackage{microtype}
-\usepackage{environ}
 \IfFileExists{orcidlink.sty}{\usepackage{orcidlink}}{\providecommand{\orcidlink}[1]{}}
 \IfFontExistsTF{texgyreheros-regular.otf}{%
   \setmainfont{texgyreheros-regular.otf}[
@@ -25,22 +24,6 @@
 \AtEndPreamble{%
   \definecolor{shadecolor}{RGB}{248,248,248}%
 }
-\makeatletter
-\AtBeginDocument{%
-  \@ifundefined{longtable}{}{%
-    \let\leafmarkoldlongtable\longtable%
-    \let\endleafmarkoldlongtable\endlongtable%
-    \RenewEnviron{longtable}[1]{%
-      \end{multicols}%
-      \begin{leafmarkoldlongtable}{##1}%
-      \BODY%
-      \end{leafmarkoldlongtable}%
-      \begin{multicols}{2}%
-      \setlength{\textwidth}{\columnwidth}%
-    }%
-  }%
-}
-\makeatother
 \renewenvironment{quote}{%
   \list{}{%
     \leftmargin=1em%

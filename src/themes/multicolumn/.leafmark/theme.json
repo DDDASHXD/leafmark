@@ -17,6 +17,12 @@
     },
     "pandoc": {
       "pdfArgs": ["-V", "geometry=left=1.7cm,right=1.7cm,top=1.8cm,bottom=1.8cm"]
-    }
+    },
+    "themePlugins": [
+      {
+        "luaFilter": ".leafmark/theme/filters/multicolumn-tables.lua",
+        "pdfArgs": []
+      }
+    ]
   }
 }

@@ -24,6 +24,7 @@ export type LeafmarkConfig = {
         latexInclude?: string;
     };
     plugins?: LeafmarkPluginConfig[];
+    themePlugins?: LeafmarkPluginConfig[];
     pandoc?: {
         args?: string[];
         pdfArgs?: string[];

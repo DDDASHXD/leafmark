@@ -317,6 +317,9 @@ function addBibliographyArgs(pandocArgs: string[], bibPaths: string[]): void {
 
 function pluginArgs(ctx: BuildContext, format: 'pdf' | 'html'): string[] {
   const out: string[] = [];
+  for (const plugin of ctx.config.themePlugins ?? []) {
+    out.push(...onePluginArgs(ctx, plugin, format));
+  }
   for (const plugin of ctx.config.plugins ?? []) {
     out.push(...onePluginArgs(ctx, plugin, format));
   }
