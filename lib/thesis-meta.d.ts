@@ -32,6 +32,8 @@ export type ThesisMeta = {
     footerRight?: string;
     /** When false, PDF/HTML omit the formatted title block (`\\maketitle` / HTML header). Default true. */
     titlePage: boolean;
+    /** When false, disable inside-word hyphenation; lines break at spaces instead. Default true. */
+    hyphens: boolean;
 };
 /** Normalize ORCID URL or bare iD to `0000-0002-1825-0097` form. */
 export declare function normalizeOrcidId(raw: string): string | null;

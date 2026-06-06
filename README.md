@@ -109,6 +109,16 @@ Common tokens: `dd` (day), `MM` or `mm` (month), `yyyy` or `YYYY` (year), `yy`
 (short year), `MMMM` / `MMM` (month name). Moment-style `DD` is also accepted.
 Use `lang` to control month names (for example `lang: da` with `d. MMMM yyyy`).
 
+### Hyphenation
+
+By default, PDF and HTML output allow inside-word hyphenation when a line is full.
+Set `hyphens: false` in metadata or `_frontmatter.md` to disable hyphenation and
+wrap lines at spaces instead:
+
+```yaml
+hyphens: false
+```
+
 ## Themes
 
 Builtin themes are packaged like standalone theme repositories:
