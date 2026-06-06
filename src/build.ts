@@ -8,6 +8,7 @@ import { discoverWorkspace } from './workspace/workspace.js';
 import { initThemeFolder, listBuiltinThemes, useTheme } from './workspace/theme.js';
 import { die } from './system/errors.js';
 import { ensureFirstRunTools, printDoctor } from './system/tools.js';
+import { printProjectStatus } from './workspace/status.js';
 
 async function main(): Promise<void> {
   const opts = parseCli(process.argv.slice(2));
@@ -17,6 +18,11 @@ async function main(): Promise<void> {
   }
   if (opts.command === 'doctor') {
     printDoctor();
+    return;
+  }
+  if (opts.command === 'status') {
+    const workspace = discoverWorkspace(opts.targetArg);
+    printProjectStatus(workspace, opts);
     return;
   }
   if (opts.command === 'init') {

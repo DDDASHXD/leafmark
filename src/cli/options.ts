@@ -13,7 +13,7 @@ const KNOWN_FLAGS = new Set([
   '--skip-tools-check',
 ]);
 
-export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order' | 'theme';
+export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order' | 'status' | 'theme';
 
 export type CliOptions = {
   command: Command;
@@ -37,6 +37,7 @@ const COMMAND_ALIASES: Record<string, Command> = {
   organize: 'order',
   organise: 'order',
   o: 'order',
+  status: 'status',
   theme: 'theme',
 };
 
@@ -47,6 +48,7 @@ export function printHelp(): void {
   leafmark order [folder]
   leafmark o [folder]
   leafmark doctor
+  leafmark status [folder]
   leafmark init [folder]
   leafmark theme init [folder]
   leafmark theme list

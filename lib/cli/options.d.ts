@@ -1,4 +1,4 @@
-export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order' | 'theme';
+export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order' | 'status' | 'theme';
 export type CliOptions = {
     command: Command;
     themeCommand: 'init' | 'list' | 'use' | null;

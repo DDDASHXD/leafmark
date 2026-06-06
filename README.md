@@ -32,6 +32,7 @@ pnpx @skxv/leafmark theme list         # list builtin themes
 pnpx @skxv/leafmark theme use default  # install a builtin theme
 pnpx @skxv/leafmark theme use https://github.com/user/theme-repo
 pnpx @skxv/leafmark doctor             # check external tools
+pnpx @skxv/leafmark status             # word and character counts (no build)
 ```
 
 Bundles are supported when a subfolder contains its own `.leafmark/config.json`
