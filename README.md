@@ -92,6 +92,22 @@ Example `.leafmark/config.json`:
 }
 ```
 
+### Date formatting
+
+Set `date` to an ISO value (`2026-02-16`) and optionally add `date-format` with a
+[Unicode LDML](https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table)-style
+pattern (same family as date-fns and Java). Leafmark formats the date before it
+reaches Pandoc (title page, footer, HTML header).
+
+```yaml
+date: 2026-02-16
+date-format: dd/MM/yyyy
+```
+
+Common tokens: `dd` (day), `MM` or `mm` (month), `yyyy` or `YYYY` (year), `yy`
+(short year), `MMMM` / `MMM` (month name). Moment-style `DD` is also accepted.
+Use `lang` to control month names (for example `lang: da` with `d. MMMM yyyy`).
+
 ## Themes
 
 Builtin themes are packaged like standalone theme repositories:

@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { isAbsolute, join } from 'node:path';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
+import { formatDocumentDate } from './date-format.js';
 
 /** ORCID iD line (icon + link in PDF/HTML, inline to the right of the name). */
 export type AuthorOrcidLine = { orcid: string };
@@ -361,7 +362,13 @@ export function normalizeConfig(raw: Record<string, unknown>): ThesisMeta {
     o.authorEntries = entries;
     o.author = entries.map(firstAuthorNameLine).filter(Boolean);
   }
-  if (str(raw.date)) o.date = str(raw.date);
+  if (str(raw.date)) {
+    const dateStr = str(raw.date);
+    const dateFormat = str(raw['date-format']);
+    o.date = dateFormat
+      ? formatDocumentDate(dateStr, dateFormat, str(raw.lang) || 'en')
+      : dateStr;
+  }
   if (strArray(raw.keywords).length) o.keywords = strArray(raw.keywords);
 
   if (raw.toc !== undefined) o.toc = bool(raw.toc, DEFAULT_META.toc);
@@ -451,6 +458,7 @@ const MERGED_YAML_BLOCKED = new Set([
   'latex-template',
   'header-includes',
   'fonts-include',
+  'date-format',
 ]);
 
 /** Keys written from `normalizeConfig` / `ThesisMeta` (raw cannot override these). */
