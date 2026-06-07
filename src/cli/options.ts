@@ -23,6 +23,7 @@ export type CliOptions = {
   positional: string[];
   wantHelp: boolean;
   outputFormat: OutputFormatId;
+  outputDir: string | null;
   wantHtml: boolean;
   htmlOnly: boolean;
   noMergeCover: boolean;
@@ -61,6 +62,7 @@ Builds Markdown to PDF from a folder of .md files. Metadata can live in
 numeric prefixes; saved order comes from .leafmark/config.json.
 
 Options:
+  --output          Output directory (default: ./dist in the current working directory)
   --output-format   Primary output format (default: pdf; supported: pdf, docx)
   --html            Also write thesis.html
   --html-only       Only build HTML
@@ -94,10 +96,17 @@ export function parseCli(argv: string[]): CliOptions {
   const yes = args.includes('--yes') || args.includes('-y');
   const skipToolsCheck = args.includes('--skip-tools-check');
   let outputFormat: OutputFormatId = DEFAULT_OUTPUT_FORMAT;
+  let outputDir: string | null = null;
   const positional: string[] = [];
 
   for (let i = 0; i < args.length; i++) {
     const a = args[i]!;
+    if (a === '--output') {
+      const value = args[++i];
+      if (!value || value.startsWith('-')) die('--output requires a directory path', 1);
+      outputDir = value;
+      continue;
+    }
     if (a === '--output-format') {
       const value = args[++i];
       if (!value || value.startsWith('-')) die('--output-format requires a value (e.g. pdf, docx)', 1);
@@ -127,6 +136,7 @@ export function parseCli(argv: string[]): CliOptions {
     positional,
     wantHelp,
     outputFormat,
+    outputDir,
     wantHtml,
     htmlOnly,
     noMergeCover,

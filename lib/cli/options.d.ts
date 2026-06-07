@@ -7,6 +7,7 @@ export type CliOptions = {
     positional: string[];
     wantHelp: boolean;
     outputFormat: OutputFormatId;
+    outputDir: string | null;
     wantHtml: boolean;
     htmlOnly: boolean;
     noMergeCover: boolean;

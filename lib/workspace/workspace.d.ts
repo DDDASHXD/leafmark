@@ -5,5 +5,5 @@ export type Workspace = {
     outputRoot: string;
     legacyProjectLayout: boolean;
 };
-export declare function discoverWorkspace(targetArg: string | null): Workspace;
+export declare function discoverWorkspace(targetArg: string | null, outputArg?: string | null): Workspace;
 export declare function isLeafmarkProject(dir: string): boolean;

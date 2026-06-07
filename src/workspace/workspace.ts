@@ -11,17 +11,19 @@ export type Workspace = {
   legacyProjectLayout: boolean;
 };
 
-export function discoverWorkspace(targetArg: string | null): Workspace {
-  const inputRoot = resolve(process.cwd(), targetArg ?? '.');
+export function discoverWorkspace(targetArg: string | null, outputArg: string | null = null): Workspace {
+  const cwd = process.cwd();
+  const inputRoot = resolve(cwd, targetArg ?? '.');
+  const outputRoot = outputArg ? resolve(cwd, outputArg) : join(cwd, 'dist');
   if (!existsSync(inputRoot)) die(`Folder not found: ${inputRoot}`, 1);
   if (!statSync(inputRoot).isDirectory()) die(`Not a folder: ${inputRoot}`, 1);
 
   if (isLeafmarkProject(inputRoot)) {
     return {
-      cwd: process.cwd(),
+      cwd,
       inputRoot,
       projectBase: inputRoot,
-      outputRoot: join(inputRoot, 'dist'),
+      outputRoot,
       legacyProjectLayout: false,
     };
   }
@@ -29,19 +31,19 @@ export function discoverWorkspace(targetArg: string | null): Workspace {
   const legacyProject = join(inputRoot, 'project');
   if (isLeafmarkProject(legacyProject)) {
     return {
-      cwd: process.cwd(),
+      cwd,
       inputRoot,
       projectBase: legacyProject,
-      outputRoot: join(inputRoot, 'dist'),
+      outputRoot,
       legacyProjectLayout: true,
     };
   }
 
   return {
-    cwd: process.cwd(),
+    cwd,
     inputRoot,
     projectBase: inputRoot,
-    outputRoot: join(inputRoot, 'dist'),
+    outputRoot,
     legacyProjectLayout: false,
   };
 }

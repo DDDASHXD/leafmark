@@ -21,7 +21,7 @@ async function main(): Promise<void> {
     return;
   }
   if (opts.command === 'status') {
-    const workspace = discoverWorkspace(opts.targetArg);
+    const workspace = discoverWorkspace(opts.targetArg, opts.outputDir);
     printProjectStatus(workspace, opts);
     return;
   }
@@ -39,7 +39,7 @@ async function main(): Promise<void> {
       return;
     }
     if (opts.themeCommand === 'use') {
-      const workspace = discoverWorkspace(opts.targetArg);
+      const workspace = discoverWorkspace(opts.targetArg, opts.outputDir);
       useTheme(workspace.projectBase, opts.positional[0]);
       return;
     }
@@ -47,7 +47,7 @@ async function main(): Promise<void> {
   }
 
   await ensureFirstRunTools(opts);
-  const workspace = discoverWorkspace(opts.targetArg);
+  const workspace = discoverWorkspace(opts.targetArg, opts.outputDir);
   if (opts.command === 'watch') await watch(workspace, opts);
   else if (opts.command === 'order') await orderProject(workspace);
   else await buildOnce(workspace, opts);

@@ -108,7 +108,7 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
 
   if (opts.wantHtml) {
     await runPandocHtml({ merged, meta, bibPaths, ctx, mergedFile, htmlOutAbs });
-    console.log(`Wrote ${relFrom(workspace.inputRoot, htmlOutAbs)}`);
+    console.log(`Wrote ${relFrom(workspace.cwd, htmlOutAbs)}`);
   }
 
   if (!opts.htmlOnly) {
@@ -142,6 +142,6 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
         mergedFile,
       });
     }
-    console.log(`Wrote ${relFrom(workspace.inputRoot, primaryOut)}`);
+    console.log(`Wrote ${relFrom(workspace.cwd, primaryOut)}`);
   }
 }
