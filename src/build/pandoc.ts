@@ -254,6 +254,40 @@ export async function runPandocPdf(params: {
   });
 }
 
+export async function runPandocDocx(params: {
+  merged: string;
+  meta: ThesisMeta;
+  bibPaths: string[];
+  extraMeta: string[];
+  outputDocxAbs: string;
+  ctx: BuildContext;
+  mergedFile: string;
+}): Promise<void> {
+  const { merged, meta, bibPaths, extraMeta, outputDocxAbs, ctx, mergedFile } = params;
+  mkdirSync(ctx.distDir, { recursive: true });
+  const pandocArgs: string[] = [
+    texPath(mergedFile),
+    '--from=markdown+smart+raw_tex',
+    '--to=docx',
+    '--output=' + texPath(outputDocxAbs),
+    '--resource-path=' + pandocResourcePath(ctx),
+    pandocHighlightArg(),
+    ...extraMeta,
+    ...pluginArgs(ctx, 'docx'),
+    ...(ctx.config.pandoc?.args ?? []),
+    ...(ctx.config.pandoc?.docxArgs ?? []),
+  ];
+
+  if (meta.numberSections) pandocArgs.push('--number-sections');
+  addBibliographyArgs(pandocArgs, bibPaths);
+
+  writeFileSync(mergedFile, merged, 'utf-8');
+  await withProgress('Generating DOCX', async () => {
+    const r = await spawnComplete('pandoc', pandocArgs, { cwd: ctx.rootForRelativePaths });
+    if (r.status !== 0) die(`pandoc failed (docx):\n${r.stderr || r.stdout || '(no output)'}`, r.status ?? 1);
+  });
+}
+
 export async function runPandocHtml(params: {
   merged: string;
   meta: ThesisMeta;
@@ -337,7 +371,9 @@ function addBibliographyArgs(pandocArgs: string[], bibPaths: string[]): void {
   pandocArgs.push('--citeproc', '-M', 'csl=' + texPath(CSL_PATH), '--lua-filter=' + texPath(LUA_FILTER_PATH));
 }
 
-function pluginArgs(ctx: BuildContext, format: 'pdf' | 'html'): string[] {
+type PandocPluginFormat = 'pdf' | 'html' | 'docx';
+
+function pluginArgs(ctx: BuildContext, format: PandocPluginFormat): string[] {
   const out: string[] = [];
   for (const plugin of ctx.config.themePlugins ?? []) {
     out.push(...onePluginArgs(ctx, plugin, format));
@@ -348,13 +384,15 @@ function pluginArgs(ctx: BuildContext, format: 'pdf' | 'html'): string[] {
   return out;
 }
 
-function onePluginArgs(ctx: BuildContext, plugin: LeafmarkPluginConfig, format: 'pdf' | 'html'): string[] {
+function onePluginArgs(ctx: BuildContext, plugin: LeafmarkPluginConfig, format: PandocPluginFormat): string[] {
   if (typeof plugin === 'string') {
     const p = resolveConfigPath(ctx.activeProjectDir, plugin);
     if (!p) return [];
     return ['--lua-filter=' + texPath(p)];
   }
-  const out = [...(plugin.args ?? []), ...(format === 'pdf' ? plugin.pdfArgs ?? [] : plugin.htmlArgs ?? [])];
+  const formatArgs =
+    format === 'pdf' ? plugin.pdfArgs ?? [] : format === 'html' ? plugin.htmlArgs ?? [] : plugin.docxArgs ?? [];
+  const out = [...(plugin.args ?? []), ...formatArgs];
   const filter = plugin.luaFilter ?? plugin.path;
   if (filter) {
     const p = resolveConfigPath(ctx.activeProjectDir, filter);

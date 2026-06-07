@@ -34,6 +34,15 @@ export declare function runPandocPdf(params: {
     includeFontsInThesisHeaderIncludes: boolean;
     useDefaultGeometry: boolean;
 }): Promise<void>;
+export declare function runPandocDocx(params: {
+    merged: string;
+    meta: ThesisMeta;
+    bibPaths: string[];
+    extraMeta: string[];
+    outputDocxAbs: string;
+    ctx: BuildContext;
+    mergedFile: string;
+}): Promise<void>;
 export declare function runPandocHtml(params: {
     merged: string;
     meta: ThesisMeta;

@@ -1,3 +1,4 @@
+import { type OutputFormatId } from '../build/output-formats.js';
 export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order' | 'status' | 'theme';
 export type CliOptions = {
     command: Command;
@@ -5,6 +6,7 @@ export type CliOptions = {
     targetArg: string | null;
     positional: string[];
     wantHelp: boolean;
+    outputFormat: OutputFormatId;
     wantHtml: boolean;
     htmlOnly: boolean;
     noMergeCover: boolean;

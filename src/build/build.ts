@@ -8,10 +8,12 @@ import type { Workspace } from '../workspace/workspace.js';
 import { CSL_PATH, LUA_FILTER_PATH } from '../system/paths.js';
 import { die } from '../system/errors.js';
 import { which } from '../system/tools.js';
+import { outputFormatSpec } from './output-formats.js';
 import {
   defaultLatexTemplate,
   fontsTexRelFromDist,
   relFrom,
+  runPandocDocx,
   runPandocHtml,
   runPandocPdf,
   spawnComplete,
@@ -44,7 +46,8 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
     config,
   };
   const mergedFile = join(distDir, '_merged.md');
-  const pdfOut = join(distDir, 'output.pdf');
+  const formatSpec = outputFormatSpec(opts.outputFormat);
+  const primaryOut = join(distDir, formatSpec.outputFilename);
   const htmlOutAbs = join(distDir, 'thesis.html');
   mkdirSync(distDir, { recursive: true });
 
@@ -87,8 +90,10 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
 
   const extraMeta: string[] = [];
   const coverPdf = resolveCoverPdfPath(rawYaml, activeProjectDir);
-  const shouldMergeCover = Boolean(coverPdf && !opts.noMergeCover && !opts.htmlOnly);
-  let pandocPdfOut = pdfOut;
+  const shouldMergeCover = Boolean(
+    opts.outputFormat === 'pdf' && coverPdf && !opts.noMergeCover && !opts.htmlOnly
+  );
+  let pandocPdfOut = primaryOut;
   if (shouldMergeCover) {
     if (!coverPdf || !existsSync(coverPdf)) die(`coverpage not found: ${coverPdf ?? ''}`, 1);
     if (!which('pdfunite')) die('coverpage requires pdfunite. Run `leafmark doctor`, or use --no-merge-cover.', 1);
@@ -107,24 +112,36 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
   }
 
   if (!opts.htmlOnly) {
-    await runPandocPdf({
-      merged,
-      meta,
-      bibPaths,
-      extraMeta,
-      outputPdfAbs: pandocPdfOut,
-      ctx,
-      mergedFile,
-      latexTemplate,
-      useThesisHeaderIncludes,
-      includeFontsInThesisHeaderIncludes,
-      useDefaultGeometry,
-    });
+    if (opts.outputFormat === 'pdf') {
+      await runPandocPdf({
+        merged,
+        meta,
+        bibPaths,
+        extraMeta,
+        outputPdfAbs: pandocPdfOut,
+        ctx,
+        mergedFile,
+        latexTemplate,
+        useThesisHeaderIncludes,
+        includeFontsInThesisHeaderIncludes,
+        useDefaultGeometry,
+      });
 
-    if (shouldMergeCover && coverPdf) {
-      const r = await spawnComplete('pdfunite', [coverPdf, pandocPdfOut, pdfOut], { cwd: rootForRelativePaths });
-      if (r.status !== 0) die(`pdfunite failed:\n${r.stderr || r.stdout || '(no output)'}`, r.status ?? 1);
+      if (shouldMergeCover && coverPdf) {
+        const r = await spawnComplete('pdfunite', [coverPdf, pandocPdfOut, primaryOut], { cwd: rootForRelativePaths });
+        if (r.status !== 0) die(`pdfunite failed:\n${r.stderr || r.stdout || '(no output)'}`, r.status ?? 1);
+      }
+    } else if (opts.outputFormat === 'docx') {
+      await runPandocDocx({
+        merged,
+        meta,
+        bibPaths,
+        extraMeta,
+        outputDocxAbs: primaryOut,
+        ctx,
+        mergedFile,
+      });
     }
-    console.log(`Wrote ${relFrom(workspace.inputRoot, pdfOut)}`);
+    console.log(`Wrote ${relFrom(workspace.inputRoot, primaryOut)}`);
   }
 }

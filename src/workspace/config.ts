@@ -15,6 +15,7 @@ export type LeafmarkPluginConfig =
       args?: string[];
       pdfArgs?: string[];
       htmlArgs?: string[];
+      docxArgs?: string[];
     };
 
 export type LeafmarkConfig = {
@@ -37,6 +38,7 @@ export type LeafmarkConfig = {
     args?: string[];
     pdfArgs?: string[];
     htmlArgs?: string[];
+    docxArgs?: string[];
   };
   metadata?: Record<string, unknown>;
 };

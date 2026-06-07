@@ -8,6 +8,7 @@ export type LeafmarkPluginConfig = string | {
     args?: string[];
     pdfArgs?: string[];
     htmlArgs?: string[];
+    docxArgs?: string[];
 };
 export type LeafmarkConfig = {
     order?: string[];
@@ -29,6 +30,7 @@ export type LeafmarkConfig = {
         args?: string[];
         pdfArgs?: string[];
         htmlArgs?: string[];
+        docxArgs?: string[];
     };
     metadata?: Record<string, unknown>;
 };

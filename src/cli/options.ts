@@ -1,5 +1,6 @@
 import { existsSync, statSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
+import { DEFAULT_OUTPUT_FORMAT, parseOutputFormat, type OutputFormatId } from '../build/output-formats.js';
 import { die } from '../system/errors.js';
 
 const KNOWN_FLAGS = new Set([
@@ -21,6 +22,7 @@ export type CliOptions = {
   targetArg: string | null;
   positional: string[];
   wantHelp: boolean;
+  outputFormat: OutputFormatId;
   wantHtml: boolean;
   htmlOnly: boolean;
   noMergeCover: boolean;
@@ -59,6 +61,7 @@ Builds Markdown to PDF from a folder of .md files. Metadata can live in
 numeric prefixes; saved order comes from .leafmark/config.json.
 
 Options:
+  --output-format   Primary output format (default: pdf; supported: pdf, docx)
   --html            Also write thesis.html
   --html-only       Only build HTML
   --no-merge-cover  Do not merge coverpage with pdfunite
@@ -90,9 +93,17 @@ export function parseCli(argv: string[]): CliOptions {
   const noMergeCover = args.includes('--no-merge-cover');
   const yes = args.includes('--yes') || args.includes('-y');
   const skipToolsCheck = args.includes('--skip-tools-check');
+  let outputFormat: OutputFormatId = DEFAULT_OUTPUT_FORMAT;
   const positional: string[] = [];
 
-  for (const a of args) {
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i]!;
+    if (a === '--output-format') {
+      const value = args[++i];
+      if (!value || value.startsWith('-')) die('--output-format requires a value (e.g. pdf, docx)', 1);
+      outputFormat = parseOutputFormat(value);
+      continue;
+    }
     if (KNOWN_FLAGS.has(a)) continue;
     if (a === '--') continue;
     const alias = COMMAND_ALIASES[a];
@@ -115,6 +126,7 @@ export function parseCli(argv: string[]): CliOptions {
     targetArg,
     positional,
     wantHelp,
+    outputFormat,
     wantHtml,
     htmlOnly,
     noMergeCover,

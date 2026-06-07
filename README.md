@@ -21,6 +21,7 @@ Leafmark also supports the older copied project layout where markdown lives in
 
 ```sh
 pnpx @skxv/leafmark                    # build output.pdf
+pnpx @skxv/leafmark --output-format docx  # build output.docx
 pnpx @skxv/leafmark --html             # build output.pdf and thesis.html
 pnpx @skxv/leafmark --html-only        # build thesis.html only
 pnpx @skxv/leafmark watch              # rebuild continuously
