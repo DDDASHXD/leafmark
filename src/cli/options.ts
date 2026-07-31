@@ -1,5 +1,5 @@
 import { existsSync, statSync } from 'node:fs';
-import { basename, resolve } from 'node:path';
+import { basename, dirname, resolve } from 'node:path';
 import { DEFAULT_OUTPUT_FORMAT, parseOutputFormat, type OutputFormatId } from '../build/output-formats.js';
 import { die } from '../system/errors.js';
 
@@ -62,7 +62,7 @@ Builds Markdown to PDF from a folder of .md files. Metadata can live in
 numeric prefixes; saved order comes from .leafmark/config.json.
 
 Options:
-  --output          Output directory (default: ./dist in the current working directory)
+  --output          Output directory (default: source folder for a .md target, otherwise ./dist)
   --output-format   Primary output format (default: pdf; supported: pdf, docx)
   --html            Also write thesis.html
   --html-only       Only build HTML
@@ -127,6 +127,12 @@ export function parseCli(argv: string[]): CliOptions {
   let targetArg: string | null = null;
   if (positional.length > 0 && looksLikeTargetFolder(positional[0]!)) {
     targetArg = positional.shift()!;
+  } else if (positional.length > 0 && isMarkdownPath(positional[0]!)) {
+    const markdownPath = positional[0]!;
+    const sourceDir = dirname(markdownPath);
+    targetArg = sourceDir;
+    positional[0] = basename(markdownPath);
+    outputDir ??= sourceDir;
   }
 
   return {
@@ -145,8 +151,12 @@ export function parseCli(argv: string[]): CliOptions {
   };
 }
 
+function isMarkdownPath(value: string): boolean {
+  return /\.md$/i.test(basename(value));
+}
+
 function looksLikeTargetFolder(value: string): boolean {
-  if (/\.md$/i.test(basename(value))) return false;
+  if (isMarkdownPath(value)) return false;
   if (value === '.' || value === '..') return true;
   if (value.includes('/') || value.includes('\\')) return true;
   const abs = resolve(process.cwd(), value);
