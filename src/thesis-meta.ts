@@ -55,7 +55,7 @@ const DEFAULT_META: ThesisMeta = {
   tocOwnPage: false,
   tocTitle: 'Table of Contents',
   referencesTitle: 'References',
-  numberSections: true,
+  numberSections: false,
   headerLeft: '',
   headerCenter: '',
   headerRight: '',

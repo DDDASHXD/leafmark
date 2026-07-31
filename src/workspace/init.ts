@@ -22,7 +22,7 @@ export function initFolder(targetArg: string | null): void {
             toc: false,
             'toc-depth': 3,
             'toc-own-page': false,
-            'number-sections': true,
+            'number-sections': false,
           },
           order: ['introduction.md'],
           fonts: {},

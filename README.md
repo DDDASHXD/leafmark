@@ -162,7 +162,7 @@ author:
 | `toc-depth`       | integer | `3`                 | Deepest heading level included in the table of contents.  |
 | `toc-own-page`    | boolean | `false`             | Put the PDF table of contents on its own page.            |
 | `toc-title`       | string  | `Table of Contents` | Table-of-contents heading.                                |
-| `number-sections` | boolean | `true`              | Number document headings.                                 |
+| `number-sections` | boolean | `false`             | Number document headings.                                 |
 | `hyphens`         | boolean | `true`              | Allow inside-word hyphenation in PDF and HTML output.     |
 
 ### PDF headers and footers
