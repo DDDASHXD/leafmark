@@ -50,7 +50,7 @@ const DEFAULT_META: ThesisMeta = {
   authorEntries: [],
   date: '',
   keywords: [],
-  toc: true,
+  toc: false,
   tocDepth: 3,
   tocOwnPage: false,
   tocTitle: 'Table of Contents',
@@ -319,6 +319,7 @@ function footerRightLine(meta: ThesisMeta): string {
 
 /** `fancyhf`, heads, footers, rules (for `\\pagestyle{fancy}` and `\\fancypagestyle{plain}`). */
 function innerFancy(meta: ThesisMeta, indent: string): string {
+  const hasHeader = Boolean(meta.headerLeft || meta.headerCenter || meta.headerRight);
   return [
     `${indent}\\fancyhf{}`,
     `${indent}${headCell('L', meta.headerLeft)}`,
@@ -327,7 +328,7 @@ function innerFancy(meta: ThesisMeta, indent: string): string {
     `${indent}${footerLeftLine(meta)}`,
     `${indent}${footerCenterLine(meta)}`,
     `${indent}${footerRightLine(meta)}`,
-    `${indent}\\renewcommand{\\headrulewidth}{0.4pt}`,
+    `${indent}\\renewcommand{\\headrulewidth}{${hasHeader ? '0.4pt' : '0pt'}}`,
     `${indent}\\renewcommand{\\footrulewidth}{0pt}`,
   ].join('\n');
 }

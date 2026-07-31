@@ -158,7 +158,7 @@ author:
 | Option            | Type    | Default             | Description                                               |
 | ----------------- | ------- | ------------------- | --------------------------------------------------------- |
 | `title-page`      | boolean | `true`              | Show the formatted PDF title block and HTML title header. |
-| `toc`             | boolean | `true`              | Generate a table of contents.                             |
+| `toc`             | boolean | `false`             | Generate a table of contents.                             |
 | `toc-depth`       | integer | `3`                 | Deepest heading level included in the table of contents.  |
 | `toc-own-page`    | boolean | `false`             | Put the PDF table of contents on its own page.            |
 | `toc-title`       | string  | `Table of Contents` | Table-of-contents heading.                                |
@@ -189,6 +189,28 @@ Header and footer values are rendered as plain text and escaped for LaTeX.
 
 `coverpage` only affects PDF output. Use `--no-merge-cover` to ignore it for a
 particular build.
+
+### Pandoc template metadata
+
+Leafmark forwards other keys to Pandoc. The bundled PDF templates directly
+support these additional Pandoc variables:
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `documentclass` | string | LaTeX document class. |
+| `classoption` | string or list | Options passed to the LaTeX document class. |
+| `papersize` | string | Paper size such as `a4` or `letter`. |
+| `fontsize` | string | Base font size such as `10pt`, `11pt`, or `12pt`. |
+| `geometry` | string or list | LaTeX page geometry settings. |
+| `linestretch` | number | Document line-spacing multiplier. |
+| `toccolor` | string | LaTeX color used for table-of-contents links. |
+| `thanks` | string | Title-page acknowledgement or thanks text. |
+| `include-before` | string or list | Content inserted before the document body. |
+| `include-after` | string or list | Content inserted after the document body. |
+
+Theme or project `pandoc.pdfArgs` values can override the corresponding
+frontmatter value. Pandoc also supports more format-specific metadata; unknown
+keys remain available to custom templates and filters.
 
 ### Complete built-in example
 
