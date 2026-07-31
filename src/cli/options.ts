@@ -12,6 +12,7 @@ const KNOWN_FLAGS = new Set([
   '--yes',
   '-y',
   '--skip-tools-check',
+  '--keep-build-files',
 ]);
 
 export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order' | 'status' | 'theme';
@@ -29,6 +30,7 @@ export type CliOptions = {
   noMergeCover: boolean;
   yes: boolean;
   skipToolsCheck: boolean;
+  keepBuildFiles: boolean;
 };
 
 const COMMAND_ALIASES: Record<string, Command> = {
@@ -64,12 +66,14 @@ numeric prefixes; saved order comes from .leafmark/config.json.
 Options:
   --output          Output directory (default: source folder for a .md target, otherwise ./dist)
   --output-format   Primary output format (default: pdf; supported: pdf, docx)
-  --html            Also write thesis.html
+  --html            Also write <name>.html
   --html-only       Only build HTML
   --no-merge-cover  Do not merge coverpage with pdfunite
   --yes, -y         Assume yes for first-run tool installation prompts
   --skip-tools-check
                     Skip first-run external tool prompt
+  --keep-build-files
+                    Keep generated Pandoc input and include files
   --help, -h        Show this help
 `);
 }
@@ -95,6 +99,7 @@ export function parseCli(argv: string[]): CliOptions {
   const noMergeCover = args.includes('--no-merge-cover');
   const yes = args.includes('--yes') || args.includes('-y');
   const skipToolsCheck = args.includes('--skip-tools-check');
+  const keepBuildFiles = args.includes('--keep-build-files');
   let outputFormat: OutputFormatId = DEFAULT_OUTPUT_FORMAT;
   let outputDir: string | null = null;
   const positional: string[] = [];
@@ -148,6 +153,7 @@ export function parseCli(argv: string[]): CliOptions {
     noMergeCover,
     yes,
     skipToolsCheck,
+    keepBuildFiles,
   };
 }
 

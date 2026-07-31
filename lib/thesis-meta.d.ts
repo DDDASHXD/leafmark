@@ -60,7 +60,7 @@ export declare function normalizeConfig(raw: Record<string, unknown>): ThesisMet
 export declare function resolveBibliographyPaths(raw: Record<string, unknown>, projectRoot: string): string[];
 /**
  * Optional cover PDF for `pdfunite` (path in YAML is relative to `project/`, or absolute).
- * Omitted / empty / false means no cover merge (Pandoc writes `dist/output.pdf` directly unless `pdfunite` merges a cover).
+ * Omitted / empty / false means no cover merge (Pandoc writes the named PDF directly unless `pdfunite` merges a cover).
  */
 export declare function resolveCoverPdfPath(raw: Record<string, unknown>, projectRoot: string): string | null;
 /** Path to a custom Pandoc `.latex` template relative to the bundle folder, or absolute. */

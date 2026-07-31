@@ -432,7 +432,7 @@ export function resolveBibliographyPaths(
 
 /**
  * Optional cover PDF for `pdfunite` (path in YAML is relative to `project/`, or absolute).
- * Omitted / empty / false means no cover merge (Pandoc writes `dist/output.pdf` directly unless `pdfunite` merges a cover).
+ * Omitted / empty / false means no cover merge (Pandoc writes the named PDF directly unless `pdfunite` merges a cover).
  */
 export function resolveCoverPdfPath(
   raw: Record<string, unknown>,

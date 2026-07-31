@@ -7,7 +7,7 @@ export type OutputFormatId = 'pdf' | 'docx';
 export type OutputFormatSpec = {
   id: OutputFormatId;
   pandocTo: string;
-  outputFilename: string;
+  outputExtension: string;
   progressLabel: string;
 };
 
@@ -15,13 +15,13 @@ export const OUTPUT_FORMATS: Record<OutputFormatId, OutputFormatSpec> = {
   pdf: {
     id: 'pdf',
     pandocTo: 'pdf',
-    outputFilename: 'output.pdf',
+    outputExtension: 'pdf',
     progressLabel: 'Generating PDF',
   },
   docx: {
     id: 'docx',
     pandocTo: 'docx',
-    outputFilename: 'output.docx',
+    outputExtension: 'docx',
     progressLabel: 'Generating DOCX',
   },
 };

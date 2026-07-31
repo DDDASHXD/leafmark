@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { existsSync, mkdirSync, rmSync } from 'node:fs';
+import { basename, extname, join, relative } from 'node:path';
 import type { CliOptions } from '../cli/options.js';
 import { splitBundleAndChapters } from '../workspace/bundles.js';
 import { buildMergedMarkdown, countMergedBody, resolveChapterFiles } from '../workspace/chapters.js';
@@ -47,8 +47,9 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
   };
   const mergedFile = join(distDir, '_merged.md');
   const formatSpec = outputFormatSpec(opts.outputFormat);
-  const primaryOut = join(distDir, formatSpec.outputFilename);
-  const htmlOutAbs = join(distDir, 'thesis.html');
+  const outputBasename = outputName(chapterArgs, activeProjectDir);
+  const primaryOut = join(distDir, `${outputBasename}.${formatSpec.outputExtension}`);
+  const htmlOutAbs = join(distDir, `${outputBasename}.html`);
   mkdirSync(distDir, { recursive: true });
 
   let rawYaml: Record<string, unknown>;
@@ -143,5 +144,29 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
       });
     }
     console.log(`Wrote ${relFrom(workspace.cwd, primaryOut)}`);
+  }
+
+  if (!opts.keepBuildFiles) removeBuildFiles(distDir);
+}
+
+function outputName(chapterArgs: string[], activeProjectDir: string): string {
+  if (chapterArgs.length === 1) {
+    const chapter = basename(chapterArgs[0]!);
+    return chapter.slice(0, -extname(chapter).length);
+  }
+  return basename(activeProjectDir);
+}
+
+function removeBuildFiles(distDir: string): void {
+  for (const filename of [
+    '_merged.md',
+    '_pandoc-authors.tex',
+    '_pandoc-build-includes.tex',
+    '_pandoc-fonts.tex',
+    '_suppress-title-page-header.html',
+    '_no-hyphens.css',
+    '_body.pdf',
+  ]) {
+    rmSync(join(distDir, filename), { force: true });
   }
 }

@@ -13,6 +13,7 @@ export type CliOptions = {
     noMergeCover: boolean;
     yes: boolean;
     skipToolsCheck: boolean;
+    keepBuildFiles: boolean;
 };
 export declare function printHelp(): void;
 export declare function parseCli(argv: string[]): CliOptions;

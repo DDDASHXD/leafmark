@@ -3,7 +3,7 @@ export type OutputFormatId = 'pdf' | 'docx';
 export type OutputFormatSpec = {
     id: OutputFormatId;
     pandocTo: string;
-    outputFilename: string;
+    outputExtension: string;
     progressLabel: string;
 };
 export declare const OUTPUT_FORMATS: Record<OutputFormatId, OutputFormatSpec>;

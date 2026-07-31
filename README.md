@@ -20,13 +20,14 @@ Leafmark also supports the older copied project layout where markdown lives in
 ## Commands
 
 ```sh
-pnpx @skxv/leafmark                    # build ./dist/output.pdf
-pnpx @skxv/leafmark ./project          # read ./project, write ./dist/output.pdf
-pnpx @skxv/leafmark ./project/file.md  # write ./project/output.pdf
-pnpx @skxv/leafmark --output ./build   # write ./build/output.pdf
-pnpx @skxv/leafmark --output-format docx  # build output.docx
-pnpx @skxv/leafmark --html             # build output.pdf and thesis.html
-pnpx @skxv/leafmark --html-only        # build thesis.html only
+pnpx @skxv/leafmark                    # build ./dist/<project-name>.pdf
+pnpx @skxv/leafmark ./project          # write ./dist/project.pdf
+pnpx @skxv/leafmark ./project/file.md  # write ./project/file.pdf
+pnpx @skxv/leafmark --output ./build   # write the PDF under ./build
+pnpx @skxv/leafmark --output-format docx  # build a named .docx file
+pnpx @skxv/leafmark --html             # also build a named .html file
+pnpx @skxv/leafmark --html-only        # only build the named .html file
+pnpx @skxv/leafmark --keep-build-files # retain generated Pandoc intermediates
 pnpx @skxv/leafmark watch              # rebuild continuously
 pnpx @skxv/leafmark o                  # arrange chapters with arrow keys
 pnpx @skxv/leafmark organize           # same as `o`
