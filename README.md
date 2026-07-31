@@ -98,6 +98,146 @@ Example `.leafmark/config.json`:
 }
 ```
 
+## Frontmatter Reference
+
+Metadata can be written as YAML in `_frontmatter.md`, or as JSON under
+`metadata` in `.leafmark/config.json`. Both locations accept the same keys. If
+both are present, `_frontmatter.md` takes precedence over `metadata` in the
+project config.
+
+An `_frontmatter.md` file must contain a YAML document between `---` markers:
+
+```yaml
+---
+title: Example Report
+author:
+  - Example Author
+date: 2026-07-31
+---
+```
+
+### Document metadata
+
+| Option        | Type           | Default                  | Description                                                                   |
+| ------------- | -------------- | ------------------------ | ----------------------------------------------------------------------------- |
+| `title`       | string         | empty                    | Document title.                                                               |
+| `subtitle`    | string         | empty                    | Document subtitle.                                                            |
+| `author`      | string or list | empty                    | One or more authors. Supports the structured format described below.          |
+| `authors`     | string or list | empty                    | Alias for `author`; `author` wins when both are present.                      |
+| `date`        | string         | empty                    | Document date. Used on the title page and as the default left footer.         |
+| `date-format` | string         | none                     | Formats `date` using an LDML-style pattern before rendering.                  |
+| `lang`        | string         | `en` for date formatting | Document language passed to Pandoc and locale used for formatted month names. |
+| `keywords`    | string or list | empty                    | Document keywords passed to Pandoc.                                           |
+| `abstract`    | string         | empty                    | Abstract content. YAML block strings are supported.                           |
+
+Authors can be a single string, a flat list with one author per item, or a
+nested list with multiple lines per author. Author lines support Markdown.
+ORCID can be written as an `orcid:` string, a bare iD in an `orcid` object, or
+an ORCID URL:
+
+```yaml
+author:
+  - - "**Alex Morgan**"
+    - Department of Examples
+    - alex@example.com
+    - orcid: 0000-0002-1825-0097
+  - - Sam Lee
+    - "orcid: https://orcid.org/0009-0004-1352-0651"
+```
+
+In a flat list, every item is treated as a separate author:
+
+```yaml
+author:
+  - Alex Morgan
+  - Sam Lee
+```
+
+### Layout and navigation
+
+| Option            | Type    | Default             | Description                                               |
+| ----------------- | ------- | ------------------- | --------------------------------------------------------- |
+| `title-page`      | boolean | `true`              | Show the formatted PDF title block and HTML title header. |
+| `toc`             | boolean | `true`              | Generate a table of contents.                             |
+| `toc-depth`       | integer | `3`                 | Deepest heading level included in the table of contents.  |
+| `toc-own-page`    | boolean | `false`             | Put the PDF table of contents on its own page.            |
+| `toc-title`       | string  | `Table of Contents` | Table-of-contents heading.                                |
+| `number-sections` | boolean | `true`              | Number document headings.                                 |
+| `hyphens`         | boolean | `true`              | Allow inside-word hyphenation in PDF and HTML output.     |
+
+### PDF headers and footers
+
+| Option          | Type           | Default       | Description                                                                                                    |
+| --------------- | -------------- | ------------- | -------------------------------------------------------------------------------------------------------------- |
+| `header-left`   | string         | empty         | Left PDF page header.                                                                                          |
+| `header-center` | string         | empty         | Center PDF page header.                                                                                        |
+| `header-right`  | string         | empty         | Right PDF page header.                                                                                         |
+| `footer-left`   | string or null | document date | Left PDF footer. If no date is set, it uses LaTeX's current date. Set to an empty string or `null` to hide it. |
+| `footer-center` | string         | empty         | Center PDF footer.                                                                                             |
+| `footer-right`  | string or null | page number   | Right PDF footer. Set to an empty string or `null` to hide it.                                                 |
+
+Header and footer values are rendered as plain text and escaped for LaTeX.
+
+### References, cover, and template
+
+| Option             | Type                     | Default                     | Description                                                                                                                  |
+| ------------------ | ------------------------ | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `bibliography`     | string, list, or `false` | `sources.bib` when present  | One or more bibliography files. Relative paths resolve from the project folder. Set to `false` or `[]` to disable citations. |
+| `references-title` | string                   | `References`                | Heading used for the generated reference list.                                                                               |
+| `coverpage`        | string or `false`        | disabled                    | PDF file prepended to the generated PDF with `pdfunite`. Relative paths resolve from the project folder.                     |
+| `latex-template`   | string or `false`        | configured/default template | Custom Pandoc LaTeX template. Relative paths resolve from the project folder.                                                |
+
+`coverpage` only affects PDF output. Use `--no-merge-cover` to ignore it for a
+particular build.
+
+### Complete built-in example
+
+```yaml
+---
+title: Example Report
+subtitle: A complete Leafmark metadata example
+author:
+  - - "**Alex Morgan**"
+    - Department of Examples
+    - orcid: 0000-0002-1825-0097
+date: 2026-07-31
+date-format: d. MMMM yyyy
+lang: en
+keywords:
+  - documentation
+  - markdown
+abstract: |
+  A short summary of the document.
+
+title-page: true
+toc: true
+toc-depth: 3
+toc-own-page: true
+toc-title: Contents
+number-sections: true
+hyphens: true
+
+header-left: Example Report
+header-center: ""
+header-right: Alex Morgan
+footer-left: ""
+footer-center: Confidential
+footer-right: null
+
+bibliography:
+  - sources.bib
+references-title: Sources
+coverpage: cover.pdf
+latex-template: templates/report.latex
+---
+```
+
+Additional frontmatter keys are forwarded to Pandoc and custom themes. This is
+how theme-specific fields such as the CV theme's `profile`, `contact`, and
+`education` work. `header-includes` and `fonts-include` are reserved because
+Leafmark generates those values during PDF builds; setting `header-includes`
+causes the build to stop with an explanatory error.
+
 ### Date formatting
 
 Set `date` to an ISO value (`2026-02-16`) and optionally add `date-format` with a
