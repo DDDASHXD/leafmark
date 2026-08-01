@@ -17,7 +17,7 @@ async function main(): Promise<void> {
     return;
   }
   if (opts.command === 'doctor') {
-    printDoctor();
+    printDoctor(opts.json);
     return;
   }
   if (opts.command === 'status') {
@@ -35,7 +35,7 @@ async function main(): Promise<void> {
       return;
     }
     if (opts.themeCommand === 'list') {
-      listBuiltinThemes();
+      listBuiltinThemes(opts.json);
       return;
     }
     if (opts.themeCommand === 'use') {

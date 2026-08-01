@@ -1,0 +1,69 @@
+{
+  "name": "leafmark-vscode",
+  "displayName": "Leafmark",
+  "description": "Arrange, configure, and export Leafmark projects from VS Code.",
+  "version": "0.1.1",
+  "publisher": "skxv",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/skxv/leafmark.git", "directory": "leafmark-vscode" },
+  "engines": { "vscode": "^1.95.0" },
+  "categories": ["Other", "Visualization"],
+  "keywords": ["leafmark", "markdown", "pandoc", "pdf"],
+  "main": "./dist/extension.js",
+  "activationEvents": ["onView:leafmark.sidebar"],
+  "contributes": {
+    "commands": [
+      { "command": "leafmark.chooseSource", "title": "Leafmark: Choose Project or File" },
+      { "command": "leafmark.export", "title": "Leafmark: Export" },
+      { "command": "leafmark.doctor", "title": "Leafmark: Run Diagnostics" },
+      { "command": "leafmark.watch", "title": "Leafmark: Watch Active Project" },
+      { "command": "leafmark.themes", "title": "Leafmark: Choose Theme" },
+      { "command": "leafmark.convert", "title": "Leafmark: Convert Active File to Project" },
+      { "command": "leafmark.refresh", "title": "Leafmark: Refresh" }
+    ],
+    "viewsContainers": {
+      "activitybar": [{ "id": "leafmark", "title": "Leafmark", "icon": "media/leafmark.svg" }]
+    },
+    "views": {
+      "leafmark": [{ "type": "webview", "id": "leafmark.sidebar", "name": "Leafmark" }]
+    },
+    "configuration": {
+      "title": "Leafmark",
+      "properties": {
+        "leafmark.packageSpec": {
+          "type": "string",
+          "default": "@skxv/leafmark@latest",
+          "description": "npm package spec invoked through npx. Pin a version for reproducible exports."
+        },
+        "leafmark.defaultExportFormat": {
+          "type": "string",
+          "enum": ["pdf", "docx", "html", "pdf+html"],
+          "default": "pdf"
+        },
+        "leafmark.defaultOutputDirectory": {
+          "type": "string",
+          "default": "",
+          "description": "Workspace-relative output directory. Empty uses Leafmark's default."
+        },
+        "leafmark.openArtifacts": { "type": "boolean", "default": false },
+        "leafmark.allowPackageDownload": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow npx to download the configured Leafmark package. Set through the confirmation prompt."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test dist/test/*.test.js && node scripts/check-webview.mjs",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@types/vscode": "^1.95.0",
+    "@vscode/vsce": "^3.6.0",
+    "typescript": "^5.8.0"
+  }
+}

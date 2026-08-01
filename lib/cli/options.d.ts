@@ -14,6 +14,8 @@ export type CliOptions = {
     yes: boolean;
     skipToolsCheck: boolean;
     keepBuildFiles: boolean;
+    json: boolean;
+    configFile: string | null;
 };
 export declare function printHelp(): void;
 export declare function parseCli(argv: string[]): CliOptions;

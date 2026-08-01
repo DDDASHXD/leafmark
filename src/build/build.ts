@@ -28,6 +28,7 @@ import {
   writeAuthorLatexFile,
   type MergedYamlOptions,
 } from '../thesis-meta.js';
+import { emitEvent } from '../system/events.js';
 
 export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise<void> {
   if (!which('pandoc')) die('pandoc not found. Run `leafmark doctor` for install guidance.', 1);
@@ -36,7 +37,7 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
   const activeProjectDir = bundleName ? join(workspace.projectBase, bundleName) : workspace.projectBase;
   const distDir = bundleName ? join(workspace.outputRoot, bundleName) : workspace.outputRoot;
   const rootForRelativePaths = workspace.legacyProjectLayout ? workspace.inputRoot : activeProjectDir;
-  const config = readProjectConfig(activeProjectDir);
+  const config = readProjectConfig(activeProjectDir, opts.configFile);
   const ctx: BuildContext = {
     workspace,
     bundleName,
@@ -84,10 +85,20 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
   const merged = buildMergedMarkdown(yamlBlock, chapterFiles, activeProjectDir);
   const counts = countMergedBody(merged);
 
-  console.log(`Leafmark ${bundleName ? `(${bundleName}) ` : ''}building ${chapterFiles.length} chapter(s)`);
-  console.log(`Input: ${activeProjectDir}`);
-  console.log(`Output: ${distDir}`);
-  console.log(`Words: ${counts.words.toLocaleString()} | characters: ${counts.chars.toLocaleString()}`);
+  if (opts.json) emitEvent('build-started', {
+    bundle: bundleName,
+    input: activeProjectDir,
+    output: distDir,
+    chapters: chapterFiles,
+    words: counts.words,
+    characters: counts.chars,
+  });
+  else {
+    console.log(`Leafmark ${bundleName ? `(${bundleName}) ` : ''}building ${chapterFiles.length} chapter(s)`);
+    console.log(`Input: ${activeProjectDir}`);
+    console.log(`Output: ${distDir}`);
+    console.log(`Words: ${counts.words.toLocaleString()} | characters: ${counts.chars.toLocaleString()}`);
+  }
 
   const extraMeta: string[] = [];
   const coverPdf = resolveCoverPdfPath(rawYaml, activeProjectDir);
@@ -109,7 +120,8 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
 
   if (opts.wantHtml) {
     await runPandocHtml({ merged, meta, bibPaths, ctx, mergedFile, htmlOutAbs });
-    console.log(`Wrote ${relFrom(workspace.cwd, htmlOutAbs)}`);
+    if (opts.json) emitEvent('artifact', { format: 'html', path: htmlOutAbs });
+    else console.log(`Wrote ${relFrom(workspace.cwd, htmlOutAbs)}`);
   }
 
   if (!opts.htmlOnly) {
@@ -143,10 +155,12 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
         mergedFile,
       });
     }
-    console.log(`Wrote ${relFrom(workspace.cwd, primaryOut)}`);
+    if (opts.json) emitEvent('artifact', { format: opts.outputFormat, path: primaryOut });
+    else console.log(`Wrote ${relFrom(workspace.cwd, primaryOut)}`);
   }
 
   if (!opts.keepBuildFiles) removeBuildFiles(distDir);
+  if (opts.json) emitEvent('complete', { command: 'build', success: true });
 }
 
 function outputName(chapterArgs: string[], activeProjectDir: string): string {

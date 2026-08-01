@@ -12,6 +12,7 @@ import {
   writeProjectConfig,
   type LeafmarkConfig,
 } from './config.js';
+import { emitEvent } from '../system/events.js';
 
 const BUILTIN_THEMES_DIR = join(PACKAGE_ROOT, 'src', 'themes');
 const THEME_CONFIG_FILE = 'theme.json';
@@ -30,8 +31,17 @@ type ThemeSource = {
   cleanup?: () => void;
 };
 
-export function listBuiltinThemes(): void {
+export function listBuiltinThemes(json = false): void {
   const themes = builtinThemes();
+  if (json) {
+    for (const theme of themes) emitEvent('theme', {
+      name: theme.name,
+      description: theme.manifest.description ?? '',
+      builtin: true,
+    });
+    emitEvent('complete', { command: 'theme-list', success: true });
+    return;
+  }
   if (themes.length === 0) {
     console.log('No builtin themes found.');
     return;

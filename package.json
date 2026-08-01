@@ -1,6 +1,6 @@
 {
   "name": "@skxv/leafmark",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "Comprehensive Markdown to PDF and HTML builder powered by Pandoc.",
   "type": "module",
   "bin": {

@@ -60,14 +60,27 @@ export function legacyConfigPath(projectDir: string): string {
   return join(projectDir, LEGACY_PROJECT_CONFIG_FILE);
 }
 
-export function readProjectConfig(projectDir: string): LeafmarkConfig {
+export function readProjectConfig(projectDir: string, overlayPath: string | null = null): LeafmarkConfig {
   const p = configPath(projectDir);
   const legacy = legacyConfigPath(projectDir);
   const readable = existsSync(p) ? p : existsSync(legacy) ? legacy : null;
-  if (!readable) return {};
-  const parsed = JSON.parse(readFileSync(readable, 'utf-8')) as unknown;
+  const base = readable ? parseConfigFile(readable) : {};
+  if (!overlayPath) return base;
+  const overlay = parseConfigFile(overlayPath);
+  return {
+    ...base,
+    ...overlay,
+    metadata: { ...(base.metadata ?? {}), ...(overlay.metadata ?? {}) },
+    fonts: { ...(base.fonts ?? {}), ...(overlay.fonts ?? {}) },
+    pandoc: { ...(base.pandoc ?? {}), ...(overlay.pandoc ?? {}) },
+  };
+}
+
+function parseConfigFile(path: string): LeafmarkConfig {
+  if (!existsSync(path)) throw new Error(`Config file not found: ${path}`);
+  const parsed = JSON.parse(readFileSync(path, 'utf-8')) as unknown;
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-    throw new Error(`Invalid ${readable}: expected a JSON object`);
+    throw new Error(`Invalid ${path}: expected a JSON object`);
   }
   return parsed as LeafmarkConfig;
 }

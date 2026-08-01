@@ -8,4 +8,4 @@ export declare function requiredToolStatus(): Array<{
     command: string;
     available: boolean;
 }>;
-export declare function printDoctor(): void;
+export declare function printDoctor(json?: boolean): void;

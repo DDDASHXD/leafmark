@@ -1,0 +1,7 @@
+src/**
+scripts/**
+tsconfig.json
+**/*.map
+**/*.test.*
+pnpm-lock.yaml
+*.vsix

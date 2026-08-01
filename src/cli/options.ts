@@ -13,6 +13,7 @@ const KNOWN_FLAGS = new Set([
   '-y',
   '--skip-tools-check',
   '--keep-build-files',
+  '--json',
 ]);
 
 export type Command = 'build' | 'watch' | 'doctor' | 'init' | 'order' | 'status' | 'theme';
@@ -31,6 +32,8 @@ export type CliOptions = {
   yes: boolean;
   skipToolsCheck: boolean;
   keepBuildFiles: boolean;
+  json: boolean;
+  configFile: string | null;
 };
 
 const COMMAND_ALIASES: Record<string, Command> = {
@@ -74,6 +77,8 @@ Options:
                     Skip first-run external tool prompt
   --keep-build-files
                     Keep generated Pandoc input and include files
+  --config-file     Overlay configuration from an external JSON file
+  --json            Emit versioned JSON Lines events
   --help, -h        Show this help
 `);
 }
@@ -100,8 +105,10 @@ export function parseCli(argv: string[]): CliOptions {
   const yes = args.includes('--yes') || args.includes('-y');
   const skipToolsCheck = args.includes('--skip-tools-check');
   const keepBuildFiles = args.includes('--keep-build-files');
+  const json = args.includes('--json');
   let outputFormat: OutputFormatId = DEFAULT_OUTPUT_FORMAT;
   let outputDir: string | null = null;
+  let configFile: string | null = null;
   const positional: string[] = [];
 
   for (let i = 0; i < args.length; i++) {
@@ -116,6 +123,12 @@ export function parseCli(argv: string[]): CliOptions {
       const value = args[++i];
       if (!value || value.startsWith('-')) die('--output-format requires a value (e.g. pdf, docx)', 1);
       outputFormat = parseOutputFormat(value);
+      continue;
+    }
+    if (a === '--config-file') {
+      const value = args[++i];
+      if (!value || value.startsWith('-')) die('--config-file requires a JSON file path', 1);
+      configFile = resolve(process.cwd(), value);
       continue;
     }
     if (KNOWN_FLAGS.has(a)) continue;
@@ -154,6 +167,8 @@ export function parseCli(argv: string[]): CliOptions {
     yes,
     skipToolsCheck,
     keepBuildFiles,
+    json,
+    configFile,
   };
 }
 

@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { createInterface } from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import type { CliOptions } from '../cli/options.js';
+import { emitEvent } from './events.js';
 
 const CONFIG_DIR = join(homedir(), '.leafmark');
 const FIRST_RUN_MARKER = join(CONFIG_DIR, 'first-run.json');
@@ -93,6 +94,7 @@ export function requiredToolStatus(): Array<{ name: string; command: string; ava
       available: Boolean(which('xelatex') || which('pdflatex')),
     },
     { name: 'pdfunite', command: 'pdfunite', available: Boolean(which('pdfunite')) },
+    { name: 'git', command: 'git', available: Boolean(which('git')) },
   ];
 }
 
@@ -156,7 +158,12 @@ function linuxPlan(manager: 'apt-get' | 'dnf', installArgs: string[], names: str
   return { command: 'sudo', args: [manager, ...installArgs, ...packages] };
 }
 
-export function printDoctor(): void {
+export function printDoctor(json = false): void {
+  if (json) {
+    for (const tool of requiredToolStatus()) emitEvent('diagnostic', tool);
+    emitEvent('complete', { command: 'doctor', success: true });
+    return;
+  }
   console.log('Leafmark external tools:');
   for (const tool of requiredToolStatus()) {
     console.log(`  ${tool.available ? 'ok' : 'missing'} ${tool.name} (${tool.command})`);

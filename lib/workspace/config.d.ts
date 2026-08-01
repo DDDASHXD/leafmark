@@ -44,7 +44,7 @@ export type LeafmarkFontFiles = {
 };
 export declare function configPath(projectDir: string): string;
 export declare function legacyConfigPath(projectDir: string): string;
-export declare function readProjectConfig(projectDir: string): LeafmarkConfig;
+export declare function readProjectConfig(projectDir: string, overlayPath?: string | null): LeafmarkConfig;
 export declare function writeProjectConfig(projectDir: string, config: LeafmarkConfig): void;
 export declare function updateProjectOrder(projectDir: string, order: string[]): void;
 export declare function readProjectMetadata(projectDir: string, config: LeafmarkConfig): Record<string, unknown>;

@@ -8,6 +8,7 @@ import { splitBundleAndChapters } from './bundles.js';
 import { resolveChapterFiles } from './chapters.js';
 import { readProjectConfig, readProjectMetadata } from './config.js';
 import type { Workspace } from './workspace.js';
+import { emitEvent } from '../system/events.js';
 
 function metadataPlainText(raw: Record<string, unknown>): string {
   const meta = normalizeConfig(raw);
@@ -43,7 +44,7 @@ function chapterPlainText(chapterFiles: string[], projectDir: string): string {
 export function printProjectStatus(workspace: Workspace, opts: CliOptions): void {
   const { bundleName, chapterArgs } = splitBundleAndChapters(opts.positional, workspace);
   const activeProjectDir = bundleName ? join(workspace.projectBase, bundleName) : workspace.projectBase;
-  const config = readProjectConfig(activeProjectDir);
+  const config = readProjectConfig(activeProjectDir, opts.configFile);
 
   let rawYaml: Record<string, unknown>;
   try {
@@ -59,6 +60,17 @@ export function printProjectStatus(workspace: Workspace, opts: CliOptions): void
   const counts = countPlainText(plainText);
 
   const label = bundleName ? ` (${bundleName})` : '';
+  if (opts.json) {
+    emitEvent('status', {
+      bundle: bundleName,
+      input: activeProjectDir,
+      chapters: chapterFiles,
+      words: counts.words,
+      charactersWithSpaces: counts.charsWithSpaces,
+      charactersWithoutSpaces: counts.charsWithoutSpaces,
+    });
+    return;
+  }
   console.log(`Leafmark${label} status`);
   console.log(`Input: ${activeProjectDir}`);
   console.log(`Chapters: ${chapterFiles.length}`);
