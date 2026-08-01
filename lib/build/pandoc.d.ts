@@ -50,5 +50,6 @@ export declare function runPandocHtml(params: {
     ctx: BuildContext;
     mergedFile: string;
     htmlOutAbs: string;
+    stylePaths: string[];
 }): Promise<void>;
 export declare function defaultLatexTemplate(ctx: BuildContext): string;

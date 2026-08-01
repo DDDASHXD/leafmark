@@ -11,6 +11,9 @@ importers:
       chokidar:
         specifier: ^3.6.0
         version: 3.6.0
+      playwright-core:
+        specifier: ^1.62.1
+        version: 1.62.1
       yaml:
         specifier: ^2.8.0
         version: 2.9.0
@@ -244,6 +247,11 @@ packages:
     resolution: {integrity: sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA==}
     engines: {node: '>=8.6'}
 
+  playwright-core@1.62.1:
+    resolution: {integrity: sha512-wPYSwEBJY9GHraISXqyqtx0na0LpO3XEX7jNDhntbex7tzUS7kLnZsOlFruFJB4Hi/rhDMjXGqHewDZ68nYZVw==}
+    engines: {node: '>=20'}
+    hasBin: true
+
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
@@ -432,6 +440,8 @@ snapshots:
   normalize-path@3.0.0: {}
 
   picomatch@2.3.2: {}
+
+  playwright-core@1.62.1: {}
 
   readdirp@3.6.0:
     dependencies:

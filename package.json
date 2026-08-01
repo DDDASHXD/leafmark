@@ -1,6 +1,6 @@
 {
   "name": "@skxv/leafmark",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Comprehensive Markdown to PDF and HTML builder powered by Pandoc.",
   "type": "module",
   "bin": {
@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "chokidar": "^3.6.0",
+    "playwright-core": "^1.62.1",
     "yaml": "^2.8.0"
   },
   "devDependencies": {

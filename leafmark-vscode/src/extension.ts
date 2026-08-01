@@ -19,6 +19,8 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.window.registerWebviewViewProvider(VIEW_ID, provider, { webviewOptions: { retainContextWhenHidden: true } }),
     vscode.commands.registerCommand('leafmark.chooseSource', () => provider.chooseSource()),
     vscode.commands.registerCommand('leafmark.export', () => provider.exportActive()),
+    vscode.commands.registerCommand('leafmark.exportCurrentFile', () => provider.exportCurrentFile()),
+    vscode.commands.registerCommand('leafmark.showCurrentFileCharacters', () => provider.showCurrentFileCharacters()),
     vscode.commands.registerCommand('leafmark.doctor', () => provider.runDoctor()),
     vscode.commands.registerCommand('leafmark.watch', () => provider.watchActive()),
     vscode.commands.registerCommand('leafmark.themes', () => provider.listThemes()),
@@ -269,8 +271,36 @@ class LeafmarkViewProvider implements vscode.WebviewViewProvider {
 
   async exportActive(format?: string, chapter = ''): Promise<void> {
     if (!this.active) return this.chooseSource();
+    await this.exportSource(this.active, format, chapter);
+  }
+
+  async exportCurrentFile(): Promise<void> {
+    const document = vscode.window.activeTextEditor?.document;
+    if (!document || document.uri.scheme !== 'file' || path.extname(document.uri.fsPath).toLowerCase() !== '.md') {
+      void vscode.window.showInformationMessage('Open a Markdown file before exporting the current file.');
+      return;
+    }
+    if (!isWorkspacePath(document.uri.fsPath)) {
+      void vscode.window.showErrorMessage('The current Markdown file must be inside the current workspace.');
+      return;
+    }
+    await this.exportSource(sourceFor(document.uri.fsPath, 'single'));
+  }
+
+  showCurrentFileCharacters(): void {
+    const document = vscode.window.activeTextEditor?.document;
+    if (!document || (document.languageId !== 'markdown' && path.extname(document.uri.fsPath).toLowerCase() !== '.md')) {
+      void vscode.window.showInformationMessage('Open a Markdown file to see its character count.');
+      return;
+    }
+    const counts = countText(document.getText());
+    void vscode.window.showInformationMessage(
+      `${counts.charsWithSpaces.toLocaleString()} characters · ${counts.charsWithoutSpaces.toLocaleString()} without spaces · ${counts.words.toLocaleString()} words`
+    );
+  }
+
+  private async exportSource(active: LeafmarkSource, format?: string, chapter = ''): Promise<void> {
     if (!(await this.ensureRunnable())) return;
-    const active = this.active;
     const documents = vscode.workspace.textDocuments.filter((doc) => doc.isDirty && isAllowedActivePath(doc.uri.fsPath, active));
     if (documents.length) {
       const answer = await vscode.window.showWarningMessage('Save changed Markdown files before exporting?', { modal: true }, 'Save and Export');

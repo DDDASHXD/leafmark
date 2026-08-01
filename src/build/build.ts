@@ -29,6 +29,7 @@ import {
   type MergedYamlOptions,
 } from '../thesis-meta.js';
 import { emitEvent } from '../system/events.js';
+import { renderHtmlBlocks, resolveStylePaths } from './html-blocks.js';
 
 export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise<void> {
   if (!which('pandoc')) die('pandoc not found. Run `leafmark doctor` for install guidance.', 1);
@@ -83,6 +84,7 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
   const chapterFiles = resolveChapterFiles(chapterArgs, activeProjectDir, config);
   const yamlBlock = mergedYamlDocument(meta, rawYaml, mergedYamlOpts);
   const merged = buildMergedMarkdown(yamlBlock, chapterFiles, activeProjectDir);
+  const stylePaths = resolveStylePaths(rawYaml.styles, ctx);
   const counts = countMergedBody(merged);
 
   if (opts.json) emitEvent('build-started', {
@@ -119,15 +121,16 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
   const useDefaultGeometry = !customLatex;
 
   if (opts.wantHtml) {
-    await runPandocHtml({ merged, meta, bibPaths, ctx, mergedFile, htmlOutAbs });
+    await runPandocHtml({ merged, meta, bibPaths, ctx, mergedFile, htmlOutAbs, stylePaths });
     if (opts.json) emitEvent('artifact', { format: 'html', path: htmlOutAbs });
     else console.log(`Wrote ${relFrom(workspace.cwd, htmlOutAbs)}`);
   }
 
   if (!opts.htmlOnly) {
+    const outputMarkdown = await renderHtmlBlocks(merged, stylePaths, ctx);
     if (opts.outputFormat === 'pdf') {
       await runPandocPdf({
-        merged,
+        merged: outputMarkdown,
         meta,
         bibPaths,
         extraMeta,
@@ -146,7 +149,7 @@ export async function buildOnce(workspace: Workspace, opts: CliOptions): Promise
       }
     } else if (opts.outputFormat === 'docx') {
       await runPandocDocx({
-        merged,
+        merged: outputMarkdown,
         meta,
         bibPaths,
         extraMeta,
@@ -183,4 +186,5 @@ function removeBuildFiles(distDir: string): void {
   ]) {
     rmSync(join(distDir, filename), { force: true });
   }
+  rmSync(join(distDir, '_html-blocks'), { recursive: true, force: true });
 }

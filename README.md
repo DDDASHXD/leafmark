@@ -129,6 +129,7 @@ date: 2026-07-31
 | `lang`        | string         | `en` for date formatting | Document language passed to Pandoc and locale used for formatted month names. |
 | `keywords`    | string or list | empty                    | Document keywords passed to Pandoc.                                           |
 | `abstract`    | string         | empty                    | Abstract content. YAML block strings are supported.                           |
+| `styles`      | list of strings| empty                    | CSS files used by HTML output and when rendering HTML blocks as images. Paths resolve from the project folder. |
 
 Authors can be a single string, a flat list with one author per item, or a
 nested list with multiple lines per author. Author lines support Markdown.
@@ -259,6 +260,31 @@ how theme-specific fields such as the CV theme's `profile`, `contact`, and
 `education` work. `header-includes` and `fonts-include` are reserved because
 Leafmark generates those values during PDF builds; setting `header-includes`
 causes the build to stop with an explanatory error.
+
+### HTML and CSS
+
+Add project CSS files to the `styles` list in `_frontmatter.md`:
+
+```yaml
+styles:
+  - styles/cards.css
+  - styles/charts.css
+```
+
+HTML may then be written directly in a Markdown chapter. HTML output preserves
+the markup and links the listed stylesheets. For PDF and DOCX output, each
+block-level HTML fragment is rendered with the stylesheets in a headless
+Chromium-based browser and embedded as a PNG image:
+
+```html
+<section class="summary-card">
+  <h2>Quarterly summary</h2>
+  <p>Revenue increased by <strong>18%</strong>.</p>
+</section>
+```
+
+Chrome, Chromium, Edge, or Brave must be installed when a PDF or DOCX contains
+HTML blocks. JavaScript inside HTML blocks is not executed.
 
 ### Date formatting
 

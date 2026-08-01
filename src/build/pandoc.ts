@@ -295,8 +295,9 @@ export async function runPandocHtml(params: {
   ctx: BuildContext;
   mergedFile: string;
   htmlOutAbs: string;
+  stylePaths: string[];
 }): Promise<void> {
-  const { merged, meta, bibPaths, ctx, mergedFile, htmlOutAbs } = params;
+  const { merged, meta, bibPaths, ctx, mergedFile, htmlOutAbs, stylePaths } = params;
   mkdirSync(ctx.distDir, { recursive: true });
   const pandocArgs: string[] = [
     texPath(mergedFile),
@@ -333,6 +334,7 @@ export async function runPandocHtml(params: {
   if (existsSync(AUTHOR_ENTRIES_LUA)) pandocArgs.push('--lua-filter=' + texPath(AUTHOR_ENTRIES_LUA));
   addBibliographyArgs(pandocArgs, bibPaths);
   if (existsSync(PRINT_CSS)) pandocArgs.push('--css=' + texPath(PRINT_CSS));
+  for (const cssPath of stylePaths) pandocArgs.push('--css=' + texPath(cssPath));
   for (const css of ctx.config.fonts?.css ?? []) {
     const cssPath = resolveConfigPath(ctx.activeProjectDir, css);
     if (!cssPath || !existsSync(cssPath)) die(`CSS font file not found: ${css}`, 1);

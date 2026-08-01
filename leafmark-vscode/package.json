@@ -2,30 +2,87 @@
   "name": "leafmark-vscode",
   "displayName": "Leafmark",
   "description": "Arrange, configure, and export Leafmark projects from VS Code.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "skxv",
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/skxv/leafmark.git", "directory": "leafmark-vscode" },
-  "engines": { "vscode": "^1.95.0" },
-  "categories": ["Other", "Visualization"],
-  "keywords": ["leafmark", "markdown", "pandoc", "pdf"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skxv/leafmark.git",
+    "directory": "leafmark-vscode"
+  },
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "leafmark",
+    "markdown",
+    "pandoc",
+    "pdf"
+  ],
   "main": "./dist/extension.js",
-  "activationEvents": ["onView:leafmark.sidebar"],
+  "activationEvents": [
+    "onView:leafmark.sidebar"
+  ],
   "contributes": {
     "commands": [
-      { "command": "leafmark.chooseSource", "title": "Leafmark: Choose Project or File" },
-      { "command": "leafmark.export", "title": "Leafmark: Export" },
-      { "command": "leafmark.doctor", "title": "Leafmark: Run Diagnostics" },
-      { "command": "leafmark.watch", "title": "Leafmark: Watch Active Project" },
-      { "command": "leafmark.themes", "title": "Leafmark: Choose Theme" },
-      { "command": "leafmark.convert", "title": "Leafmark: Convert Active File to Project" },
-      { "command": "leafmark.refresh", "title": "Leafmark: Refresh" }
+      {
+        "command": "leafmark.chooseSource",
+        "title": "Leafmark: Choose Project or File"
+      },
+      {
+        "command": "leafmark.export",
+        "title": "Leafmark: Export"
+      },
+      {
+        "command": "leafmark.exportCurrentFile",
+        "title": "Leafmark: Export Current File"
+      },
+      {
+        "command": "leafmark.showCurrentFileCharacters",
+        "title": "Leafmark: Show Current File Character Count"
+      },
+      {
+        "command": "leafmark.doctor",
+        "title": "Leafmark: Run Diagnostics"
+      },
+      {
+        "command": "leafmark.watch",
+        "title": "Leafmark: Watch Active Project"
+      },
+      {
+        "command": "leafmark.themes",
+        "title": "Leafmark: Choose Theme"
+      },
+      {
+        "command": "leafmark.convert",
+        "title": "Leafmark: Convert Active File to Project"
+      },
+      {
+        "command": "leafmark.refresh",
+        "title": "Leafmark: Refresh"
+      }
     ],
     "viewsContainers": {
-      "activitybar": [{ "id": "leafmark", "title": "Leafmark", "icon": "media/leafmark.svg" }]
+      "activitybar": [
+        {
+          "id": "leafmark",
+          "title": "Leafmark",
+          "icon": "media/leafmark.svg"
+        }
+      ]
     },
     "views": {
-      "leafmark": [{ "type": "webview", "id": "leafmark.sidebar", "name": "Leafmark" }]
+      "leafmark": [
+        {
+          "type": "webview",
+          "id": "leafmark.sidebar",
+          "name": "Leafmark"
+        }
+      ]
     },
     "configuration": {
       "title": "Leafmark",
@@ -37,7 +94,12 @@
         },
         "leafmark.defaultExportFormat": {
           "type": "string",
-          "enum": ["pdf", "docx", "html", "pdf+html"],
+          "enum": [
+            "pdf",
+            "docx",
+            "html",
+            "pdf+html"
+          ],
           "default": "pdf"
         },
         "leafmark.defaultOutputDirectory": {
@@ -45,7 +107,10 @@
           "default": "",
           "description": "Workspace-relative output directory. Empty uses Leafmark's default."
         },
-        "leafmark.openArtifacts": { "type": "boolean", "default": false },
+        "leafmark.openArtifacts": {
+          "type": "boolean",
+          "default": false
+        },
         "leafmark.allowPackageDownload": {
           "type": "boolean",
           "default": false,
