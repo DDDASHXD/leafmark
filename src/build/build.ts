@@ -182,6 +182,8 @@ function removeBuildFiles(distDir: string): void {
     '_pandoc-fonts.tex',
     '_suppress-title-page-header.html',
     '_no-hyphens.css',
+    '_leafmark-theme.css',
+    '_leafmark-theme.tex',
     '_body.pdf',
   ]) {
     rmSync(join(distDir, filename), { force: true });

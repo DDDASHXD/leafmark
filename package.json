@@ -1,6 +1,6 @@
 {
   "name": "@skxv/leafmark",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Comprehensive Markdown to PDF and HTML builder powered by Pandoc.",
   "type": "module",
   "bin": {
@@ -21,6 +21,7 @@
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/build.ts",
     "leafmark": "tsx src/build.ts",
+    "theme:editor": "tsx src/dev/theme-editor.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

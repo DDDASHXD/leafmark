@@ -213,6 +213,51 @@ Theme or project `pandoc.pdfArgs` values can override the corresponding
 frontmatter value. Pandoc also supports more format-specific metadata; unknown
 keys remain available to custom templates and filters.
 
+### Basic themes in config
+
+Common document styling can live directly in `.leafmark/config.json`. The same
+`theme` object is compiled for PDF and HTML, so basic themes do not need custom
+LaTeX templates or CSS files:
+
+```json
+{
+  "theme": {
+    "page": {
+      "size": "a4",
+      "margins": { "top": "20mm", "right": "28mm", "bottom": "22mm", "left": "28mm" }
+    },
+    "typography": {
+      "bodyFont": "inherit",
+      "headingFont": "inherit",
+      "monoFont": "inherit",
+      "fontSize": "11pt",
+      "lineHeight": 1.5,
+      "justify": "left"
+    },
+    "colors": {
+      "text": "#1a1a1a",
+      "heading": "#111111",
+      "link": "#0b57d0",
+      "muted": "#666666",
+      "accent": "#315c8c",
+      "surface": "#f8f8f8",
+      "border": "#d8d8d8"
+    },
+    "spacing": { "paragraph": "7pt", "headingTop": "18pt", "headingBottom": "7pt", "listIndent": "18pt" },
+    "headings": { "weight": "bold", "h1Size": "18pt", "h2Size": "15pt", "h3Size": "13pt" },
+    "tables": { "cellPadding": "5pt", "borderWidth": "0.5pt", "striped": true, "headerBackground": "#eeeeee" },
+    "blocks": { "padding": "9pt", "radius": "3pt", "quoteBorderWidth": "3pt" }
+  }
+}
+```
+
+Use `inherit` to keep Leafmark's current font setup, or enter an installed font
+name. Lengths accept `mm`, `cm`, `in`, and `pt`; colors use six-digit hex.
+
+For interactive development, run `pnpm theme:editor` in the Leafmark source
+repository and open the printed local URL. The editor renders a real example
+PDF as settings change and can copy or download a ready-to-use config file.
+
 ### Complete built-in example
 
 ```yaml

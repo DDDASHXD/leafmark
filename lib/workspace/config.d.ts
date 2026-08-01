@@ -1,3 +1,4 @@
+import type { BasicTheme } from '../theme/engine.js';
 export declare const LEAFMARK_DIR = ".leafmark";
 export declare const PROJECT_CONFIG_FILE: string;
 export declare const LEGACY_PROJECT_CONFIG_FILE = "leafmark.json";
@@ -33,6 +34,8 @@ export type LeafmarkConfig = {
         docxArgs?: string[];
     };
     metadata?: Record<string, unknown>;
+    /** Portable, JSON-native styling shared by PDF and HTML output. */
+    theme?: BasicTheme;
 };
 export type LeafmarkFontFiles = {
     path?: string;

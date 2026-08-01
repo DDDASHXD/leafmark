@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
+import type { BasicTheme } from '../theme/engine.js';
 
 export const LEAFMARK_DIR = '.leafmark';
 export const PROJECT_CONFIG_FILE = join(LEAFMARK_DIR, 'config.json');
@@ -41,6 +42,8 @@ export type LeafmarkConfig = {
     docxArgs?: string[];
   };
   metadata?: Record<string, unknown>;
+  /** Portable, JSON-native styling shared by PDF and HTML output. */
+  theme?: BasicTheme;
 };
 
 export type LeafmarkFontFiles = {
@@ -73,6 +76,26 @@ export function readProjectConfig(projectDir: string, overlayPath: string | null
     metadata: { ...(base.metadata ?? {}), ...(overlay.metadata ?? {}) },
     fonts: { ...(base.fonts ?? {}), ...(overlay.fonts ?? {}) },
     pandoc: { ...(base.pandoc ?? {}), ...(overlay.pandoc ?? {}) },
+    theme: mergeBasicTheme(base.theme, overlay.theme),
+  };
+}
+
+function mergeBasicTheme(base: BasicTheme | undefined, overlay: BasicTheme | undefined): BasicTheme | undefined {
+  if (!base && !overlay) return undefined;
+  return {
+    ...base,
+    ...overlay,
+    page: base?.page || overlay?.page ? {
+      ...base?.page,
+      ...overlay?.page,
+      margins: { ...base?.page?.margins, ...overlay?.page?.margins },
+    } : undefined,
+    typography: { ...base?.typography, ...overlay?.typography },
+    colors: { ...base?.colors, ...overlay?.colors },
+    spacing: { ...base?.spacing, ...overlay?.spacing },
+    headings: { ...base?.headings, ...overlay?.headings },
+    tables: { ...base?.tables, ...overlay?.tables },
+    blocks: { ...base?.blocks, ...overlay?.blocks },
   };
 }
 
