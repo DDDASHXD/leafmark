@@ -62,7 +62,7 @@ export async function renderHtmlBlocks(
       const element = page.locator('#leafmark-html-block');
       await element.screenshot({ path: output, animations: 'disabled' });
       const imagePath = output.replace(/\\/g, '/');
-      replacements.push(`![Rendered HTML block](<${imagePath}>){.leafmark-html-block}`);
+      replacements.push(`\n\n![Rendered HTML block](<${imagePath}>){.leafmark-html-block}\n\n`);
     }
 
     let rendered = '';
@@ -103,6 +103,31 @@ function findHtmlBlocks(markdown: string): Array<{ start: number; end: number; h
   for (let index = 0; index < lines.length; index++) {
     const line = lines[index]!;
     const trimmed = line.trim();
+    const fence = trimmed.match(/^(`{3,}|~{3,})\s*([^\s{]*)/);
+    if (fence) {
+      const start = offset;
+      const marker = fence[1]!;
+      const language = (fence[2] ?? '').toLowerCase();
+      const closingFence = new RegExp(`^\\s*${marker[0]}{${marker.length},}\\s*$`);
+      let fencedLength = line.length;
+      let html = '';
+      let closed = false;
+      while (index + 1 < lines.length) {
+        index++;
+        const next = lines[index]!;
+        fencedLength += next.length;
+        if (closingFence.test(next.trimEnd())) {
+          closed = true;
+          break;
+        }
+        html += next;
+      }
+      if (closed && (language === 'html' || language === 'htm')) {
+        blocks.push({ start, end: start + fencedLength, html: html.trimEnd() });
+      }
+      offset += fencedLength;
+      continue;
+    }
     const match = trimmed.match(BLOCK_START);
     const tag = match?.[1]?.toLowerCase();
     if (!tag || NON_VISUAL_TAGS.has(tag) || trimmed.startsWith('<!--')) {
