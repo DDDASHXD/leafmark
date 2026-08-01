@@ -230,6 +230,7 @@ LaTeX templates or CSS files:
       "bodyFont": "inherit",
       "headingFont": "inherit",
       "monoFont": "inherit",
+      "googleFonts": { "body": "Inter", "heading": "Playfair Display", "mono": "Roboto Mono" },
       "fontSize": "11pt",
       "lineHeight": 1.5,
       "justify": "left"
@@ -253,6 +254,9 @@ LaTeX templates or CSS files:
 
 Use `inherit` to keep Leafmark's current font setup, or enter an installed font
 name. Lengths accept `mm`, `cm`, `in`, and `pt`; colors use six-digit hex.
+Fonts listed under `typography.googleFonts` are loaded from Google Fonts for
+HTML and downloaded as temporary TrueType build assets for PDF output. The
+theme editor provides previewed shadcn Select menus for supported families.
 
 For interactive development, run `pnpm theme:editor` in the Leafmark source
 repository and open the printed local URL. The editor renders a real example

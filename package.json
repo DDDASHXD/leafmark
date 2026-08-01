@@ -21,7 +21,8 @@
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/build.ts",
     "leafmark": "tsx src/build.ts",
-    "theme:editor": "tsx src/dev/theme-editor.ts",
+    "theme:editor:ui": "pnpm --dir src/dev/theme-editor-ui/vite-app build",
+    "theme:editor": "pnpm theme:editor:ui && tsx src/dev/theme-editor.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

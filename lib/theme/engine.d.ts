@@ -11,6 +11,7 @@ export type BasicTheme = {
         fontSize?: ThemeLength;
         lineHeight?: number;
         justify?: 'left' | 'justify';
+        googleFonts?: Partial<Record<'body' | 'heading' | 'mono', string>>;
     };
     colors?: Partial<Record<'text' | 'heading' | 'link' | 'muted' | 'accent' | 'surface' | 'border', string>>;
     spacing?: {
@@ -42,7 +43,9 @@ type NormalizedTheme = {
         size: 'a4' | 'letter';
         margins: Record<'top' | 'right' | 'bottom' | 'left', ThemeLength>;
     };
-    typography: Required<NonNullable<BasicTheme['typography']>>;
+    typography: Required<Omit<NonNullable<BasicTheme['typography']>, 'googleFonts'>> & {
+        googleFonts: Partial<Record<'body' | 'heading' | 'mono', string>>;
+    };
     colors: Required<NonNullable<BasicTheme['colors']>>;
     spacing: Required<NonNullable<BasicTheme['spacing']>>;
     headings: Required<NonNullable<BasicTheme['headings']>>;
@@ -56,4 +59,5 @@ export declare function writeCompiledTheme(theme: BasicTheme | undefined, output
 };
 export declare function compileThemeLatex(input: BasicTheme): string;
 export declare function compileThemeCss(input: BasicTheme): string;
+export declare function writeGoogleFontInclude(theme: BasicTheme | undefined, outputDir: string): Promise<string | null>;
 export {};

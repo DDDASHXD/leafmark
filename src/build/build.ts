@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { basename, extname, join, relative } from 'node:path';
 import type { CliOptions } from '../cli/options.js';
 import { splitBundleAndChapters } from '../workspace/bundles.js';
@@ -184,9 +184,13 @@ function removeBuildFiles(distDir: string): void {
     '_no-hyphens.css',
     '_leafmark-theme.css',
     '_leafmark-theme.tex',
+    '_leafmark-google-fonts.tex',
     '_body.pdf',
   ]) {
     rmSync(join(distDir, filename), { force: true });
+  }
+  for (const filename of readdirSync(distDir)) {
+    if (filename.startsWith('_leafmark-google-') && filename.endsWith('.ttf')) rmSync(join(distDir, filename), { force: true });
   }
   rmSync(join(distDir, '_html-blocks'), { recursive: true, force: true });
 }
